@@ -1,0 +1,123 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- HEADER -->
+    <div class="header md-accent-bg" layout="row" layout-align="space-between">
+        <div layout="column" layout-align="space-between">
+            <div class="breadcrumb" layout="row" layout-align="start center">
+                <md-icon md-font-icon="icon-home" class="s16"></md-icon>
+                <md-icon md-font-icon="icon-chevron-right" class="s16 separator"></md-icon>
+                <span class="parent">Captura</span>
+            </div>
+
+            <div class="title">Embolse</div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+
+        <div class="md-title mt-32">Informacion para embolse</div>
+        <div class="pb-16">Para llevar un control de la fruta el primer paso que se hace es el embolse con apuntalamiento</div>
+        <div layout="row">
+
+            <!-- BASIC FORM -->
+            <div class="form-wrapper md-whiteframe-1dp" flex="60">
+
+                <form name="basicForm" class="md-inline-form" novalidate>
+
+                    <div class="form-title">Captura</div>
+
+                    <div layout="column" layout-gt-sm="row">
+                        <md-input-container flex>
+                            <input type="text" name="Embolsador" ng-model="vm.basicForm.firstname"
+                                   placeholder="Embolsador"
+                                   required>
+                            <div ng-messages="basicForm.firstname.$error"
+                                 role="alert">
+                                <div ng-message="required">
+                                    <span>Campo obligatorio.</span>
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex>
+                            <input type="text" name="Gestor M&S" ng-model="vm.basicForm.lastname" placeholder="Gestor M&S"
+                                   required>
+                            <div ng-messages="basicForm.lastname.$error"
+                                 role="alert">
+                                <div ng-message="required">
+                                    <span>Campo obligatorio.</span>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout="column" layout-gt-xs="row">
+                        <md-input-container flex>
+                            <label>Fecha</label>
+                            <input type="text" name="city" ng-model="vm.basicForm.city">
+                        </md-input-container>
+
+                        <md-input-container flex>
+                            <label>Dia</label>
+                            <md-select ng-model="vm.basicForm.state">
+                                <md-option ng-repeat="state in vm.states" value="{{state.abbrev}}">
+                                    {{state.abbrev}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container flex>
+                            <label>Semana</label>
+                            <md-select ng-model="vm.basicForm.state">
+                                <md-option ng-repeat="state in vm.states" value="{{state.abbrev}}">
+                                    {{state.abbrev}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+
+                    <div layout="column" layout-gt-xs="row">
+                        <md-input-container flex>
+                            <label>Pedido</label>
+                            <input type="text" name="city" ng-model="vm.basicForm.city">
+                        </md-input-container>
+
+                        <md-input-container flex>
+                            <label>Cinta</label>
+                            <md-select ng-model="vm.basicForm.state">
+                                <md-option ng-repeat="state in vm.states" value="{{state.abbrev}}">
+                                    {{state.abbrev}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container flex>
+                            <label>Finca</label>
+                            <md-select ng-model="vm.basicForm.state">
+                                <md-option ng-repeat="state in vm.states" value="{{state.abbrev}}">
+                                    {{state.abbrev}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container class="md-block">
+                        <label># Proyecto</label>
+                        <textarea ng-model="vm.basicForm.biography" md-maxlength="150" max-rows="5"></textarea>
+                    </md-input-container>
+
+                    <md-button type="submit" class="md-raised md-accent" aria-label="Submit"
+                               ng-disabled="basicForm.$invalid || basicForm.$pristine">
+                        Guardar
+                    </md-button>
+                </form>
+
+            </div>
+            <!-- / BASIC FORM -->
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>
