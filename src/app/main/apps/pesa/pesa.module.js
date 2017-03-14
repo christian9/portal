@@ -3,7 +3,10 @@
     'use strict';
 
     angular
-        .module('app.pesa',[])
+        .module('app.pesa',
+        [
+            'app.pesa.viajes'
+        ])
 
         .config(config);
 
@@ -23,23 +26,25 @@
             weight: 1
         });
 
-        msNavigationServiceProvider.saveItem('apps.pesa.muestreos', {
-            title: 'Muestreos',
-            //state: 'app.dashboards_project'
-        });
-
-        msNavigationServiceProvider.saveItem('apps.pesa.perfiles', {
-            title: 'Perfiles',
-            //state: 'app.dashboards_server'
+        msNavigationServiceProvider.saveItem('apps.pesa.viajes', {
+            title: 'Viajes',
+            state: 'app.pesa_viajes',
+            class: 'navigation-pesa pesa-viajes',
+            weight: 1
         });
 
         msNavigationServiceProvider.saveItem('apps.pesa.rechazos', {
             title: 'Rechazos',
             state: 'app.pesa_rechazos'
         });
+        
+        msNavigationServiceProvider.saveItem('apps.pesa.muestreos', {
+            title: 'Muestreos',
+            //state: 'app.dashboards_server'
+        });
 
-        msNavigationServiceProvider.saveItem('apps.pesa.viajes', {
-            title: 'Viajes',
+        msNavigationServiceProvider.saveItem('apps.pesa.perfiles', {
+            title: 'Perfiles',
             //state: 'app.dashboards_server'
         });
     }
