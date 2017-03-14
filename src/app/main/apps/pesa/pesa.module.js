@@ -35,7 +35,7 @@
 
         msNavigationServiceProvider.saveItem('apps.pesa.rechazos', {
             title: 'Rechazos',
-            //state: 'app.dashboards_server'
+            state: 'app.pesa_rechazos'
         });
 
         msNavigationServiceProvider.saveItem('apps.pesa.viajes', {
