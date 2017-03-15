@@ -6,8 +6,7 @@
         .module('app.pesa.rechazos',
             [
                 // 3rd Party Dependencies
-                'nvd3',
-                'datatables'
+                'nvd3'
             ]
         )
         .config(config);
@@ -25,7 +24,7 @@
                 }
             },
             resolve  : {
-                DashboardData: function (msApi)
+                PesaData: function (msApi)
                 {
                     return msApi.resolve('pesa.rechazos@get');
                 }
