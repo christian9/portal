@@ -307,6 +307,89 @@
         // Widget 4
         vm.widget4 = vm.dashboardData.widget4;
 
+         // Widget 6
+        vm.widget6 = {
+            title       : vm.dashboardData.widget6.title,
+            mainChart   : {
+                config : {
+                    refreshDataOnly: true,
+                    deepWatchData  : true
+                },
+                options: {
+                    chart: {
+                        type        : 'pieChart',
+                        color       : ['#f44336', '#9c27b0', '#03a9f4', '#e91e63'],
+                        height      : 400,
+                        margin      : {
+                            top   : 0,
+                            right : 0,
+                            bottom: 0,
+                            left  : 0
+                        },
+                        donut       : true,
+                        clipEdge    : true,
+                        cornerRadius: 0,
+                        labelType   : 'percent',
+                        padAngle    : 0.02,
+                        x           : function (d)
+                        {
+                            return d.label;
+                        },
+                        y           : function (d)
+                        {
+                            return d.value;
+                        },
+                        tooltip     : {
+                            gravity: 's',
+                            classes: 'gravity-s'
+                        }
+                    }
+                },
+                data   : []
+            },
+            footerLeft  : vm.dashboardData.widget6.footerLeft,
+            footerRight : vm.dashboardData.widget6.footerRight,
+            ranges      : vm.dashboardData.widget6.ranges,
+            currentRange: '',
+            changeRange : function (range)
+            {
+                vm.widget6.currentRange = range;
+
+                /**
+                 * Update main chart data by iterating through the
+                 * chart dataset and separately adding every single
+                 * dataset by hand.
+                 *
+                 * You MUST NOT swap the entire data object by doing
+                 * something similar to this:
+                 * vm.widget.mainChart.data = chartData
+                 *
+                 * It would be easier but it won't work with the
+                 * live updating / animated charts due to how d3
+                 * works.
+                 *
+                 * If you don't need animated / live updating charts,
+                 * you can simplify these greatly.
+                 */
+                angular.forEach(vm.dashboardData.widget6.mainChart, function (data, index)
+                {
+                    vm.widget6.mainChart.data[index] = {
+                        label: data.label,
+                        value: data.values[range]
+                    };
+                });
+            },
+            init        : function ()
+            {
+                // Run this function once to initialize widget
+
+                /**
+                 * Update the range for the first time
+                 */
+                vm.widget6.changeRange('TW');
+            }
+        };
+
 
         // Methods
 
@@ -317,6 +400,9 @@
         {
             vm.widget2.map = vm.dashboardData.widget2.map;
         });
+
+        // Initialize Widget 6
+        vm.widget6.init();
     }
 
 })();
