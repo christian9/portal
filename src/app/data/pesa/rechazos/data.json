@@ -117,7 +117,7 @@
         }
     },
     "widget2": {
-        "title": "Histórico de Rechazos Por Cable.",
+        "title": "Histórico de Rechazos por Cable.",
         "onlineUsers": 149,
         "sessions": {
             "title": "Grupo 1 - Cable 1",
@@ -245,7 +245,7 @@
         }
     },    
     "widget3": {
-        "title": "Histórico de Rechazos Por Embarque.",
+        "title": "Histórico de Rechazos por Embarque.",
         "onlineUsers": 149,
         "sessions": {
             "title": "Embarque 1",
