@@ -5,7 +5,8 @@
     angular
         .module('app.pesa',
         [
-            'app.pesa.viajes'
+            'app.pesa.viajes',
+            'app.pesa.rechazos'
         ])
 
         .config(config);
@@ -37,7 +38,7 @@
             title: 'Rechazos',
             state: 'app.pesa_rechazos'
         });
-        
+
         msNavigationServiceProvider.saveItem('apps.pesa.muestreos', {
             title: 'Muestreos',
             //state: 'app.dashboards_server'
