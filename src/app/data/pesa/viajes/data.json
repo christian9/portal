@@ -116,8 +116,8 @@
             ]
         },
         "sessions": {
-            "title": "Sessions",
-            "value": "14,710",
+            "title": "Grupo 1 - Cable 1",
+            "value": "8",
             "chart": [
                 {
                     "key": "Sessions",
@@ -147,8 +147,8 @@
             ]
         },
         "pageviews": {
-            "title": "Pageviews",
-            "value": "101,961",
+            "title": "Grupo 1 - Cable 2",
+            "value": "5",
             "chart": [
                 {
                     "key": "Pageviews",
@@ -178,8 +178,8 @@
             ]
         },
         "pagesSessions": {
-            "title": "Pages / Sessions",
-            "value": "6.93",
+            "title": "Grupo 1 - Cable 3",
+            "value": "6",
             "chart": [
                 {
                     "key": "Pages / Session",
@@ -209,8 +209,8 @@
             ]
         },
         "avgSessionDuration": {
-            "title": "Avg. Session Duration",
-            "value": "00:03:45",
+            "title": "Grupo 2 - Cable 4",
+            "value": "7",
             "chart": [
                 {
                     "key": "Avg. Session Duration",
@@ -666,7 +666,7 @@
     },
 
     "widget6": {
-        "title": "Tareas ",
+        "title": "Aporte por Cable ",
         "ranges": {
             "TW": "Esta Semana",
             "LW": "Semana Pasada",
@@ -674,7 +674,7 @@
         },
         "mainChart": [
             {
-                "label": "Grupo 01",
+                "label": "Cable 01",
                 "values": {
                     "2W": 18,
                     "LW": 19,
@@ -682,7 +682,7 @@
                 }
             },
             {
-                "label": "Grupo 02",
+                "label": "Cable 02",
                 "values": {
                     "2W": 17,
                     "LW": 16,
@@ -690,7 +690,7 @@
                 }
             },
             {
-                "label": "Grupo 03",
+                "label": "Cable 03",
                 "values": {
                     "2W": 40,
                     "LW": 42,
@@ -698,7 +698,7 @@
                 }
             },
             {
-                "label": "Grupo04",
+                "label": "Cable",
                 "values": {
                     "2W": 25,
                     "LW": 23,
@@ -707,7 +707,7 @@
             }
         ],
         "footerLeft": {
-            "title": "Tareas",
+            "title": "Aportes",
             "count": {
                 "2W": 487,
                 "LW": 526,
@@ -715,7 +715,7 @@
             }
         },
         "footerRight": {
-            "title": "Tareas Realizadas",
+            "title": "Totalizados",
             "count": {
                 "2W": 193,
                 "LW": 260,
