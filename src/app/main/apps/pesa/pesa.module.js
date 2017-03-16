@@ -7,7 +7,8 @@
         [
             'app.pesa.viajes',
             'app.pesa.rechazos',
-            'app.pesa.muestreos'
+            'app.pesa.muestreos',
+            'app.pesa.perfiles'
         ])
 
         .config(config);
@@ -47,7 +48,7 @@
 
         msNavigationServiceProvider.saveItem('apps.pesa.perfiles', {
             title: 'Perfiles',
-            //state: 'app.dashboards_server'
+            state: 'app.pesa_perfiles'
         });
     }
 
