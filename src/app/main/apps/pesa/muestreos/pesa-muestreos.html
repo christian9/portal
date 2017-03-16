@@ -1,2 +1,87 @@
+<div id="pesa-muestreos">
 
+    <!-- WIDGETS -->
+    <div id="widgets">
+
+        <!-- WIDGET GROUP -->
+        <div class="widget-group" layout="row" flex="100" layout-wrap>
+            <!-- WIDGET 1 -->
+            <ms-widget flippable="false" layout="row" flex="100">
+                <!-- Front -->
+                <ms-widget-front class="p-16 white-bg">
+                    <div class="pb-16" layout="row" layout-align="space-between center">
+                        <div class="h3">{{vm.widget1.title}}</div>
+
+                        <md-menu>
+                            <md-button aria-label="more" class="md-icon-button"
+                                       ng-click="$mdOpenMenu($event)">
+                                <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                            </md-button>
+                            <md-menu-content width="2">
+                                <md-menu-item>
+                                    <md-button ng-click="refreshWidget()" aria-label="Refresh widget">
+                                        Actualizar
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
+
+                    <div>
+                        <nvd3 class="h-320"
+                              class="remove-x-lines"
+                              options="vm.widget1.chart.options"
+                              data="vm.widget1.chart.data"></nvd3>
+                    </div>
+                </ms-widget-front>
+                <!-- / Front -->
+            </ms-widget>
+            <!-- / WIDGET 1 -->
+        </div>
+        <!-- / WIDGET GROUP -->
+
+
+        <!-- Widget 2 utilizado para presentar los muestreos  -->
+        <!-- WIDGET GROUP -->
+        <div class="widget-group" layout="row" flex="100" layout-wrap>
+            <!-- WIDGET 4 -->
+            <ms-widget flippable="false" layout="row" flex="100">
+                <!-- Front -->
+                <ms-widget-front class="white-bg">
+                    <div class="ph-16 pt-16 pb-8 md-accent-bg">
+                        <div class="h3">{{vm.widget9.title}}</div>
+                    </div>
+
+                    <md-tabs class="md-accent no-radius" md-dynamic-height>
+                        <md-tab label="{{tab.label}}" ng-repeat="tab in vm.widget9.tabs">
+
+                            <div layout="row" layout-align="start center" layout-wrap>
+
+                                <div flex="100" flex-gt-xs="50" flex-gt-md="25"
+                                     ng-repeat="group in tab.groups">
+                                    <div class="h2 m-16 pb-16 border-bottom">{{group.title}}</div>
+
+                                    <div class="p-16 pb-32" ng-repeat="data in group.data">
+                                        <div class="pb-8" layout="row" layout-align="space-between start">
+                                            <span class="h3">{{data.title}}</span>
+                                            <span class="h3 secondary-text font-weight-500">{{data.value}}%</span>
+                                        </div>
+                                        <md-progress-linear class="{{data.progressColor}}" md-mode="determinate"
+                                                            value="{{data.value}}"></md-progress-linear>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </md-tab>
+                    </md-tabs>
+                </ms-widget-front>
+                <!-- / Front -->
+
+            </ms-widget>
+            <!-- / WIDGET 4 -->
+        </div>
+        <!-- / WIDGET GROUP -->
+    </div>
+</div>
 
