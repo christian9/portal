@@ -240,6 +240,7 @@
             ]
         }
     },
+
     "widget2": {
         "title": "Visitors",
         "map": {
@@ -337,6 +338,7 @@
             ]
         }
     },
+
     "widget3": {
         "title": "Top 5 pages",
         "ranges": {
@@ -391,6 +393,7 @@
             ]
         }
     },
+    
     "widget4": {
         "title": "Audience",
         "table": {

@@ -77,130 +77,29 @@
         // Widget 2
         vm.widget2 = vm.dashboardData.widget2;
 
-        // Widget 3
-        vm.widget3 = vm.dashboardData.widget3;
-
-        // Widget 4
-        vm.widget4 = {
-            title   : vm.dashboardData.widget4.title,
-            value   : vm.dashboardData.widget4.value,
-            footnote: vm.dashboardData.widget4.footnote,
-            detail  : vm.dashboardData.widget4.detail,
-            chart   : {
-                config : {
-                    refreshDataOnly: true,
-                    deepWatchData  : true
-                },
+         // Widget 3
+         vm.widget3 = {
+            title             : vm.dashboardData.widget3.title,
+            onlineUsers       : vm.dashboardData.widget3.onlineUsers,
+            bigChart          : {
                 options: {
                     chart: {
-                        type        : 'lineChart',
-                        color       : ['rgba(0, 0, 0, 0.27)'],
-                        height      : 50,
-                        margin      : {
-                            top   : 8,
-                            right : 0,
-                            bottom: 0,
-                            left  : 0
-                        },
-                        duration    : 1,
-                        clipEdge    : true,
-                        interpolate : 'cardinal',
-                        interactive : false,
-                        isArea      : true,
-                        showLegend  : false,
-                        showControls: false,
-                        showXAxis   : false,
-                        showYAxis   : false,
-                        x           : function (d)
-                        {
-                            return d.x;
-                        },
-                        y           : function (d)
-                        {
-                            return d.y;
-                        },
-                        yDomain     : [0, 4]
-                    }
-                },
-                data   : vm.dashboardData.widget4.chart
-            },
-            init    : function ()
-            {
-                // Run this function once to initialize the widget
-
-                // Grab the x value
-                var lastIndex = vm.dashboardData.widget4.chart[0].values.length - 1,
-                    x = vm.dashboardData.widget4.chart[0].values[lastIndex].x;
-
-                /**
-                 * Emulate constant data flow
-                 *
-                 * @param min
-                 * @param max
-                 */
-                function latencyTicker(min, max)
-                {
-                    // Increase the x value
-                    x++;
-
-                    var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-
-                    var newValue = {
-                        x: x,
-                        y: randomNumber
-                    };
-
-                    vm.widget4.chart.data[0].values.shift();
-                    vm.widget4.chart.data[0].values.push(newValue);
-
-                    // Randomize the value
-                    vm.widget4.value = 20 + randomNumber + 'ms';
-                }
-
-                // Set interval
-                var latencyTickerInterval = $interval(function ()
-                {
-                    latencyTicker(1, 4);
-                }, 1000);
-
-                // Cleanup
-                $scope.$on('$destroy', function ()
-                {
-                    $interval.cancel(latencyTickerInterval);
-                });
-            }
-        };
-
-        // Widget 5
-        vm.widget5 = vm.dashboardData.widget5;
-
-        // Widget 6
-        vm.widget6 = {
-            title: vm.dashboardData.widget6.title,
-            chart: {
-                config : {
-                    refreshDataOnly: true,
-                    deepWatchData  : true
-                },
-                options: {
-                    chart: {
-                        type                   : 'lineChart',
-                        color                  : ['#03A9F4'],
-                        height                 : 140,
+                        type                   : 'lineWithFocusChart',
+                        color                  : ['#2196F3'],
+                        height                 : 400,
                         margin                 : {
-                            top   : 8,
+                            top   : 32,
                             right : 32,
-                            bottom: 16,
+                            bottom: 64,
                             left  : 48
                         },
+                        isArea                 : true,
+                        useInteractiveGuideline: true,
                         duration               : 1,
                         clipEdge               : true,
                         clipVoronoi            : false,
                         interpolate            : 'cardinal',
-                        isArea                 : true,
-                        useInteractiveGuideline: true,
                         showLegend             : false,
-                        showControls           : false,
                         x                      : function (d)
                         {
                             return d.x;
@@ -209,18 +108,83 @@
                         {
                             return d.y;
                         },
-                        yDomain                : [0, 100],
+                        xAxis                  : {
+                            showMaxMin: false,
+                            tickFormat: function (d)
+                            {
+                                var date = new Date(new Date().setDate(new Date().getDate() + d));
+                                return d3.time.format('%b %d')(date);
+                            }
+                        },
+                        yAxis                  : {
+                            showMaxMin: false
+                        },
+                        x2Axis                 : {
+                            showMaxMin: false,
+                            tickFormat: function (d)
+                            {
+                                var date = new Date(new Date().setDate(new Date().getDate() + d));
+                                return d3.time.format('%b %d')(date);
+                            }
+                        },
+                        y2Axis                 : {
+                            showMaxMin: false
+                        },
+                        interactiveLayer       : {
+                            tooltip: {
+                                gravity: 's',
+                                classes: 'gravity-s'
+                            }
+                        },
+                        legend                 : {
+                            margin    : {
+                                top   : 8,
+                                right : 0,
+                                bottom: 32,
+                                left  : 0
+                            },
+                            rightAlign: false
+                        }
+                    }
+                },
+                data   : vm.dashboardData.widget3.bigChart.chart
+            },
+            sessions          : {
+                title   : vm.dashboardData.widget3.sessions.title,
+                value   : vm.dashboardData.widget3.sessions.value,
+                previous: vm.dashboardData.widget3.sessions.previous,
+                options : {
+                    chart: {
+                        type                   : 'lineChart',
+                        color                  : ['#03A9F4'],
+                        height                 : 40,
+                        margin                 : {
+                            top   : 4,
+                            right : 4,
+                            bottom: 4,
+                            left  : 4
+                        },
+                        isArea                 : true,
+                        interpolate            : 'cardinal',
+                        clipEdge               : true,
+                        duration               : 500,
+                        showXAxis              : false,
+                        showYAxis              : false,
+                        showLegend             : false,
+                        useInteractiveGuideline: true,
+                        x                      : function (d)
+                        {
+                            return d.x;
+                        },
+                        y                      : function (d)
+                        {
+                            return d.y;
+                        },
                         xAxis                  : {
                             tickFormat: function (d)
                             {
-                                return d + ' sec.';
-                            },
-                            showMaxMin: false
-                        },
-                        yAxis                  : {
-                            tickFormat: function (d)
-                            {
-                                return d + '%';
+                                var date = new Date(new Date().setDate(new Date().getDate() + d));
+                                return d3.time.format('%A, %B %d, %Y')(date);
                             }
                         },
                         interactiveLayer       : {
@@ -231,132 +195,159 @@
                         }
                     }
                 },
-                data   : vm.dashboardData.widget6.chart
+                data    : vm.dashboardData.widget3.sessions.chart
             },
-            init : function ()
-            {
-                // Run this function once to initialize the widget
-
-                // Grab the x value
-                var lastIndex = vm.dashboardData.widget6.chart[0].values.length - 1,
-                    x = vm.dashboardData.widget6.chart[0].values[lastIndex].x;
-
-                /**
-                 * Emulate constant data flow
-                 *
-                 * @param min
-                 * @param max
-                 */
-                function cpuTicker(min, max)
-                {
-                    // Increase the x value
-                    x = x + 5;
-
-                    var newValue = {
-                        x: x,
-                        y: Math.floor(Math.random() * (max - min + 1)) + min
-                    };
-
-                    vm.widget6.chart.data[0].values.shift();
-                    vm.widget6.chart.data[0].values.push(newValue);
-                }
-
-                // Set interval
-                var cpuTickerInterval = $interval(function ()
-                {
-                    cpuTicker(0, 100);
-                }, 5000);
-
-                // Cleanup
-                $scope.$on('$destroy', function ()
-                {
-                    $interval.cancel(cpuTickerInterval);
-                });
-            }
-        };
-
-        // Widget 7
-        vm.widget7 = {
-            title    : vm.dashboardData.widget7.title,
-            table    : vm.dashboardData.widget7.table,
-            dtOptions: {
-                dom       : '<"top"f>rt<"bottom"<"left"<"length"l>><"right"<"info"i><"pagination"p>>>',
-                pagingType: 'simple',
-                pageLength: 10,
-                lengthMenu: [10, 20, 50, 100],
-                autoWidth : false,
-                responsive: true,
-                columnDefs: [
-                    {
-                        width  : '20%',
-                        targets: [0, 1, 2, 3, 4]
-                    }
-                ],
-                columns   : [
-                    {},
-                    {},
-                    {
-                        render: function (data, type)
+            pageviews         : {
+                title   : vm.dashboardData.widget3.pageviews.title,
+                value   : vm.dashboardData.widget3.pageviews.value,
+                previous: vm.dashboardData.widget3.pageviews.previous,
+                options : {
+                    chart: {
+                        type                   : 'lineChart',
+                        color                  : ['#3F51B5'],
+                        height                 : 40,
+                        margin                 : {
+                            top   : 4,
+                            right : 4,
+                            bottom: 4,
+                            left  : 4
+                        },
+                        isArea                 : true,
+                        interpolate            : 'cardinal',
+                        clipEdge               : true,
+                        duration               : 500,
+                        showXAxis              : false,
+                        showYAxis              : false,
+                        showLegend             : false,
+                        useInteractiveGuideline: true,
+                        x                      : function (d)
                         {
-                            if ( type === 'display' )
-                            {
-                                return data + ' KB/s';
-                            }
-                            else
-                            {
-                                return data;
-                            }
-                        }
-                    },
-                    {
-                        render: function (data, type)
+                            return d.x;
+                        },
+                        y                      : function (d)
                         {
-                            if ( type === 'display' )
+                            return d.y;
+                        },
+                        xAxis                  : {
+                            tickFormat: function (d)
                             {
-                                return data + '%';
+                                var date = new Date(new Date().setDate(new Date().getDate() + d));
+                                return d3.time.format('%A, %B %d, %Y')(date);
                             }
-                            else
-                            {
-                                return data;
-                            }
-                        }
-                    },
-                    {
-                        render: function (data, type)
-                        {
-                            if ( type === 'display' )
-                            {
-                                var el = angular.element(data);
-                                el.html(el.text() + ' MB');
-
-                                return el[0].outerHTML;
-                            }
-                            else
-                            {
-                                return data;
+                        },
+                        interactiveLayer       : {
+                            tooltip: {
+                                gravity: 's',
+                                classes: 'gravity-s'
                             }
                         }
                     }
-                ]
+                },
+                data    : vm.dashboardData.widget3.pageviews.chart
+            },
+            pagesSessions     : {
+                title   : vm.dashboardData.widget3.pagesSessions.title,
+                value   : vm.dashboardData.widget3.pagesSessions.value,
+                previous: vm.dashboardData.widget3.pagesSessions.previous,
+                options : {
+                    chart: {
+                        type                   : 'lineChart',
+                        color                  : ['#E91E63'],
+                        height                 : 40,
+                        margin                 : {
+                            top   : 4,
+                            right : 4,
+                            bottom: 4,
+                            left  : 4
+                        },
+                        isArea                 : true,
+                        interpolate            : 'cardinal',
+                        clipEdge               : true,
+                        duration               : 500,
+                        showXAxis              : false,
+                        showYAxis              : false,
+                        showLegend             : false,
+                        useInteractiveGuideline: true,
+                        x                      : function (d)
+                        {
+                            return d.x;
+                        },
+                        y                      : function (d)
+                        {
+                            return d.y;
+                        },
+                        xAxis                  : {
+                            tickFormat: function (d)
+                            {
+                                var date = new Date(new Date().setDate(new Date().getDate() + d));
+                                return d3.time.format('%A, %B %d, %Y')(date);
+                            }
+                        },
+                        interactiveLayer       : {
+                            tooltip: {
+                                gravity: 's',
+                                classes: 'gravity-s'
+                            }
+                        }
+                    }
+                },
+                data    : vm.dashboardData.widget3.pagesSessions.chart
+            },
+            avgSessionDuration: {
+                title   : vm.dashboardData.widget3.avgSessionDuration.title,
+                value   : vm.dashboardData.widget3.avgSessionDuration.value,
+                previous: vm.dashboardData.widget3.avgSessionDuration.previous,
+                options : {
+                    chart: {
+                        type                   : 'lineChart',
+                        color                  : ['#009688'],
+                        height                 : 40,
+                        margin                 : {
+                            top   : 4,
+                            right : 4,
+                            bottom: 4,
+                            left  : 4
+                        },
+                        isArea                 : true,
+                        interpolate            : 'cardinal',
+                        clipEdge               : true,
+                        duration               : 500,
+                        showXAxis              : false,
+                        showYAxis              : false,
+                        showLegend             : false,
+                        useInteractiveGuideline: true,
+                        x                      : function (d)
+                        {
+                            return d.x;
+                        },
+                        y                      : function (d)
+                        {
+                            return d.y;
+                        },
+                        xAxis                  : {
+                            tickFormat: function (d)
+                            {
+                                var date = new Date(new Date().setDate(new Date().getDate() + d));
+                                return d3.time.format('%A, %B %d, %Y')(date);
+                            }
+                        },
+                        yAxis                  : {
+                            tickFormat: function (d)
+                            {
+                                var formatTime = d3.time.format('%M:%S');
+                                return formatTime(new Date('2012', '0', '1', '0', '0', d));
+                            }
+                        },
+                        interactiveLayer       : {
+                            tooltip: {
+                                gravity: 's',
+                                classes: 'gravity-s'
+                            }
+                        }
+                    }
+                },
+                data    : vm.dashboardData.widget3.avgSessionDuration.chart
             }
         };
-
-        // Widget 8
-        vm.widget8 = vm.dashboardData.widget8;
-
-         // Widget 4
-        vm.widget9 = vm.dashboardData.widget9;
-
-        // Methods
-
-        //////////
-
-        // Init Widget 4
-        vm.widget4.init();
-
-        // Init Widget 6
-        vm.widget6.init();
-
-
     }
 })();
