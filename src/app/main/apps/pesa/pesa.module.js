@@ -6,7 +6,9 @@
         .module('app.pesa',
         [
             'app.pesa.viajes',
-            'app.pesa.rechazos'
+            'app.pesa.rechazos',
+            'app.pesa.muestreos',
+            'app.pesa.perfiles'
         ])
 
         .config(config);
@@ -41,12 +43,12 @@
 
         msNavigationServiceProvider.saveItem('apps.pesa.muestreos', {
             title: 'Muestreos',
-            //state: 'app.dashboards_server'
+            state: 'app.pesa_muestreos',
         });
 
         msNavigationServiceProvider.saveItem('apps.pesa.perfiles', {
             title: 'Perfiles',
-            //state: 'app.dashboards_server'
+            state: 'app.pesa_perfiles'
         });
     }
 

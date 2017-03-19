@@ -26,14 +26,14 @@
             resolve  : {
                 DashboardData: function (msApi)
                 {
-                    return msApi.resolve('dashboard.analytics@get');
+                    return msApi.resolve('pesa.viajes@get');
                 }
             },
             bodyClass: 'pesa-viajes'
         });
 
         // Api
-        msApiProvider.register('pesa.viajes', ['app/data/dashboard/analytics/data.json']);
+        msApiProvider.register('pesa.viajes', ['app/data/pesa/viajes/data.json']);
     }
 
 })();

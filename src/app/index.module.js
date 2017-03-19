@@ -28,7 +28,7 @@
             // Apps
             'app.dashboards', 
             'app.pesa',
-            //'app.inventario'
+            'app.inventario'
             //Indicadores BI
             //'app.e-commerce', //Sistema de fruta
             //'app.calendar',
