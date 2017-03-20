@@ -34,6 +34,8 @@
 
         // Api
         msApiProvider.register('pesa.viajes', ['app/data/pesa/viajes/data.json']);
+        msApiProvider.register('pesa.variables', ['http://gestionagricolaapi.azurewebsites.net/api/variable',null,{'get': { method:'get', isArray: true }}]);
+        msApiProvider.register('pesa.bananas', ['http://gestionagricolaapi.azurewebsites.net/api/banano',null,{'get': { method:'get', isArray: true }}]);
     }
 
 })();

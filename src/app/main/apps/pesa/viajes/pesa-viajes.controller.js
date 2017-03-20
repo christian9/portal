@@ -6,14 +6,169 @@
         .module('app.pesa.viajes')
         .controller('PesaViajesController', PesaViajesController);
 
+
+    function dataByDays(varData)
+    {    
+        var rejections = [];
+        //console.log(varData);
+        //1-Iterate through raw data to get logical rejections
+        for (var variable in varData) {
+            variable = varData[variable];
+            if(variable["VariablesType"] == 0){ //It's a rejection!
+                var values = {};
+                //Parse String values into real rejection variable (moho, madurez, golpe, hongo, ...)
+                var str = variable["StringValues"];
+                var strlist = str.split("|");
+                for (var strpair in strlist) {
+                    strpair = strlist[strpair];
+                    var pair = strpair.split(":");
+                    values[pair[0]] = parseInt(pair[1]);
+                }
+                var fecha = new Date(variable["Time"]);
+                //Create rejection object, assign data and add it to result
+                var rejection = {}
+                rejection["Fecha"] = fecha;
+                rejection["Causa"] = Object.keys(values)[0];
+                rejection["Valor"] = values[Object.keys(values)[0]];
+                rejection["NumViaje"] = variable["TravelNumber"];
+                rejections.push(rejection);
+            }
+        };
+
+        //2-Order them using dates to get proper order on charts arrays. Otherwise, navigation through graph data won't work
+        rejections.sort(function (x, y) {
+            var a = x["Fecha"];
+            var b = y["Fecha"];
+            a = a.getTime();
+            b = b.getTime();
+            return a < b ? -1 : a > b ? 1 : 0;
+        });
+
+        //3-Get rejections in date-indexed dict to easily extract graph data
+        var porFecha = {};
+        for(var rejection in rejections) {
+            rejection = rejections[rejection];
+            var rejDate = rejection["Fecha"].toLocaleDateString('en-GB');
+            if(porFecha[rejDate]){
+                porFecha[rejDate]["Total"]+=1;
+                if(porFecha[rejDate][rejection["Causa"]]){
+                    porFecha[rejDate][rejection["Causa"]]["Cantidad"]+=1
+                    porFecha[rejDate][rejection["Causa"]]["Valor"]+=rejection["Valor"]
+                }
+                else{
+                    porFecha[rejDate][rejection["Causa"]]={}
+                    porFecha[rejDate][rejection["Causa"]]["Cantidad"]=1
+                    porFecha[rejDate][rejection["Causa"]]["Valor"]=rejection["Valor"]
+                }
+            } else {
+                porFecha[rejDate] = {};
+                porFecha[rejDate]["Total"]=1;
+                if(porFecha[rejDate][rejection["Causa"]]){
+                    porFecha[rejDate][rejection["Causa"]]["Cantidad"]+=1
+                    porFecha[rejDate][rejection["Causa"]]["Valor"]+=rejection["Valor"]
+                }
+                else{
+                    porFecha[rejDate][rejection["Causa"]]={}
+                    porFecha[rejDate][rejection["Causa"]]["Cantidad"]=1
+                    porFecha[rejDate][rejection["Causa"]]["Valor"]=rejection["Valor"]
+                }
+            }
+        }
+        
+        //4-Create charts data arrays iterating through ordered & formatted data
+        var bigChart = [];
+        var moho = [];          var mohoTot = 0;        var mohoVal = 0;      
+        var madurez = [];       var madurezTot = 0;     var madurezVal = 0;   
+        var golpe = [];         var golpeTot = 0;       var golpeVal = 0;
+        var patogeno = [];      var patogenoTot = 0;    var patogenoVal = 0;
+        var cochinilla = [];    var cochinillaTot = 0;  var cochinillaVal = 0;
+        var tamano = [];        var tamanoTot = 0;      var tamanoVal = 0;
+        var mordida = [];       var mordidaTot = 0;     var mordidaVal = 0;
+        var hongo = [];         var hongoTot = 0;       var hongoVal = 0;
+        for(var key in porFecha) {
+            var pf = porFecha[key];
+            //Calculate difference in dates to give the chart "x" value. 0=today, -1=yesterday, 1=tomorrow, ...
+            var today = new Date();
+            var parts = key.split("/")
+            var date = new Date( parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]) );
+            var timeDiff = date.getTime() - today.getTime();
+            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            //Add to certain graph depending on rejection variable(s)
+            if(pf.Moho){
+                mohoTot += pf.Moho.Cantidad
+                mohoVal += pf.Moho.Valor
+                moho.push({"x":daysDiff, "y":pf.Moho.Cantidad});
+            }
+            if(pf.Madurez){
+                madurezTot += pf.Madurez.Cantidad
+                madurezVal += pf.Madurez.Valor
+                madurez.push({"x":daysDiff, "y":pf.Madurez.Cantidad});
+            }
+            if(pf.Golpe){
+                golpeTot += pf.Golpe.Cantidad
+                golpeVal += pf.Golpe.Valor
+                golpe.push({"x":daysDiff, "y":pf.Golpe.Cantidad});
+            }
+            if(pf.Patogeno){
+                patogenoTot += pf.Patogeno.Cantidad
+                patogenoVal += pf.Patogeno.Valor
+                patogeno.push({"x":daysDiff, "y":pf.Patogeno.Cantidad});
+            }
+            if(pf.Mordida){
+                mordidaTot += pf.Mordida.Cantidad
+                mordidaVal += pf.Mordida.Valor
+                mordida.push({"x":daysDiff, "y":pf.Mordida.Cantidad});
+            }
+            if(pf.Hongo){
+                hongoTot += pf.Hongo.Cantidad
+                hongoVal += pf.Hongo.Valor
+                hongo.push({"x":daysDiff, "y":pf.Hongo.Cantidad});
+            }
+            if(pf.Tamaño){
+                tamanoTot += pf.Tamaño.Cantidad
+                tamanoVal += pf.Tamaño.Valor
+                tamano.push({"x":daysDiff, "y":pf.Tamaño.Cantidad});
+            }
+            if(pf.Cochinilla){
+                cochinillaTot += pf.Cochinilla.Cantidad
+                cochinillaVal += pf.Cochinilla.Valor
+                cochinilla.push({"x":daysDiff, "y":pf.Cochinilla.Cantidad});
+            }
+            //Add every rejection date to bigChart
+            bigChart.push({"x":daysDiff, "y":pf.Total});
+        }
+        //Get average of each rejection type
+        mohoVal         /=  mohoTot;      
+        madurezVal      /=  madurezTot;   
+        golpeVal        /=  golpeTot;
+        patogenoVal     /=  patogenoTot;
+        cochinillaVal   /=  cochinillaTot;
+        tamanoVal       /=  tamanoTot;
+        mordidaVal      /=  mordidaTot;
+        hongoVal        /=  hongoTot;
+        //Assign graphs and averages to same structure in case all the information is needed
+        porFecha["BigChart"] = bigChart;
+        porFecha["Mordida"] = {"Avg":mordidaVal, "Data":mordida};
+        porFecha["Hongo"] = {"Avg":hongoVal, "Data":hongo};
+        porFecha["Tamaño"] = {"Avg":tamanoVal, "Data":tamano};
+        porFecha["Cochinilla"] = {"Avg":cochinillaVal, "Data":cochinilla};
+        porFecha["Patogeno"] = {"Avg":patogenoVal, "Data":patogeno};
+        porFecha["Golpe"] = {"Avg":golpeVal, "Data":golpe};
+        porFecha["Madurez"] = {"Avg":madurezVal, "Data":madurez};
+        porFecha["Moho"] = {"Avg":mohoVal, "Data":moho};
+        //Return complete data
+        return porFecha;
+    }
+
     /** @ngInject */
-    function PesaViajesController(DashboardData, uiGmapGoogleMapApi)
+    function PesaViajesController(DashboardData, VariableData, BananaData)
     {
         var vm = this;
 
         // Data
         vm.dashboardData = DashboardData;
         vm.colors = ['blue-bg', 'blue-grey-bg', 'orange-bg', 'pink-bg', 'purple-bg'];
+        var byDays = dataByDays(VariableData)
 
         vm.widget1 = {
             title             : vm.dashboardData.widget1.title,
