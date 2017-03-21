@@ -13,8 +13,7 @@
                         <div class="h3">{{vm.widget1.title}}</div>
 
                         <md-menu>
-                            <md-button aria-label="more" class="md-icon-button"
-                                       ng-click="$mdOpenMenu($event)">
+                            <md-button aria-label="more" class="md-icon-button" ng-click="$mdOpenMenu($event)">
                                 <md-icon md-font-icon="icon-dots-vertical"></md-icon>
                             </md-button>
                             <md-menu-content width="2">
@@ -28,10 +27,7 @@
                     </div>
 
                     <div>
-                        <nvd3 class="h-320"
-                              class="remove-x-lines"
-                              options="vm.widget1.chart.options"
-                              data="vm.widget1.chart.data"></nvd3>
+                        <nvd3 class="h-320" class="remove-x-lines" options="vm.widget1.chart.options" data="vm.widget1.chart.data"></nvd3>
                     </div>
                 </ms-widget-front>
                 <!-- / Front -->
@@ -41,10 +37,10 @@
         <!-- / WIDGET GROUP -->
 
 
-        <!-- Widget 2 utilizado para presentar los muestreos en areas pequeñas -->
+        <!-- Widget 2 utilizado para presentar los perfiles en areas pequeñas -->
         <!-- WIDGET GROUP -->
         <div class="widget-group" layout="row" flex="100" layout-wrap>
-            <!-- WIDGET 4 -->
+            <!-- WIDGET 2 -->
             <ms-widget flippable="false" layout="row" flex="100">
                 <!-- Front -->
                 <ms-widget-front class="white-bg">
@@ -55,202 +51,174 @@
                     <md-tabs class="md-accent no-radius" md-dynamic-height>
                         <md-tab label="{{tab.label}}" ng-repeat="tab in vm.widget2.tabs">
 
-                             <!-- WIDGET 3 -->
-                <ms-widget flippable="false" layout="row" flex="100">
+                            <!-- WIDGET 2 INNER -->
+                            <ms-widget flippable="false" layout="row" flex="100">
 
-                <!-- Front -->
-                <ms-widget-front class="white-bg">
-                     <!-- Widgets de area pequeña para 8 cables -->
+                                <!-- Front -->
+                                <ms-widget-front class="white-bg">
+                                    <!-- 4 gráficos -->
+                                    <div layout="row" layout-align="start center" layout-wrap>
 
-                    <div layout="row" layout-align="start center" layout-wrap>
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[0].title}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.sessions.title}}
-                                </div>
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[0].value}}
+                                                </div>
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.sessions.value}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[0].options" data="tab.graphs[0].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.sessions.options"
-                                          data="vm.widget3.sessions.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
+                                        <!-- -->
 
-                        <!-- -->
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[1].title}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.pageviews.title}}
-                                </div>
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[1].value}}
+                                                </div>
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.pageviews.value}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[1].options" data="tab.graphs[1].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.pageviews.options"
-                                          data="vm.widget3.pageviews.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
+                                        <!-- -->
 
-                        <!-- -->
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[2].title}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.pagesSessions.title}}
-                                </div>
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[2].value}}
+                                                </div>
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.pagesSessions.value}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[2].options" data="tab.graphs[2].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.pagesSessions.options"
-                                          data="vm.widget3.pagesSessions.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
+                                        <!-- -->
 
-                        <!-- -->
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[3].title}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.avgSessionDuration.title}}
-                                </div>
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[3].value}}
+                                                </div>
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.avgSessionDuration.value}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[3].options" data="tab.graphs[3].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- / 4 gráficos -->
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.avgSessionDuration.options"
-                                          data="vm.widget3.avgSessionDuration.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <!--Fin de Wigets de area pequeños -->
+                                    <!-- 4 gráficos -->
+                                    <div layout="row" layout-align="start center" layout-wrap>
 
-                     <!-- Widgets dearea pequeña para 8 cables -->
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[4].title}}
+                                                </div>
 
-                    <div layout="row" layout-align="start center" layout-wrap>
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[4].value}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.sessions.title}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[4].options" data="tab.graphs[4].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.sessions.value}}
-                                </div>
+                                        <!-- -->
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.sessions.options"
-                                          data="vm.widget3.sessions.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[5].title}}
+                                                </div>
 
-                        <!-- -->
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[5].value}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.pageviews.title}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[5].options" data="tab.graphs[5].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.pageviews.value}}
-                                </div>
+                                        <!-- -->
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.pageviews.options"
-                                          data="vm.widget3.pageviews.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[6].title}}
+                                                </div>
 
-                        <!-- -->
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[6].value}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.pagesSessions.title}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[6].options" data="tab.graphs[6].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.pagesSessions.value}}
-                                </div>
+                                        <!-- -->
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.pagesSessions.options"
-                                          data="vm.widget3.pagesSessions.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
+                                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50" flex-gt-md="25">
+                                            <div layout="column" flex>
+                                                <div class="h3 secondary-text pb-8">
+                                                    {{tab.graphs[7].title}}
+                                                </div>
 
-                        <!-- -->
+                                                <div class="font-size-32 line-height-32 pb-16">
+                                                    {{tab.graphs[7].value}}
+                                                </div>
 
-                        <div class="p-24 grey-50-bg" layout="row" layout-align="start center" flex="100" flex-gt-xs="50"
-                             flex-gt-md="25">
-                            <div layout="column" flex>
-                                <div class="h3 secondary-text pb-8">
-                                    {{vm.widget3.avgSessionDuration.title}}
-                                </div>
+                                                <div>
+                                                    <nvd3 class="h-40" options="tab.graphs[7].options" data="tab.graphs[7].data"></nvd3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- / 4 gráficos -->
 
-                                <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget3.avgSessionDuration.value}}
-                                </div>
+                                </ms-widget-front>
+                                <!-- / Front -->
 
-                                <div>
-                                    <nvd3 class="h-40"
-                                          options="vm.widget3.avgSessionDuration.options"
-                                          data="vm.widget3.avgSessionDuration.data"></nvd3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <!--Fin de Wigets de area pequeños -->
+                            </ms-widget>
+                            <!-- / WIDGET 2 INNER -->
 
-
-                </ms-widget-front>
-                <!-- / Front -->
-
-            </ms-widget>
-            <!-- / WIDGET 1 -->
-                          
-                                                                     
                         </md-tab>
                     </md-tabs>
                 </ms-widget-front>
                 <!-- / Front -->
 
             </ms-widget>
-            <!-- / WIDGET 4 -->
+            <!-- / WIDGET 2 -->
         </div>
         <!-- / WIDGET GROUP -->
     </div>

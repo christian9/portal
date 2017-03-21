@@ -26,7 +26,7 @@
             resolve  : {
                 JsonData: function (msApi)
                 {
-                    return msApi.resolve('pesa.json@get');
+                    return msApi.resolve('pesa.rjson@get');
                 },
                 VariableData: function (msApi)
                 {
@@ -41,7 +41,7 @@
         });
 
         // Api
-        msApiProvider.register('pesa.json', ['app/data/pesa/rechazos/data.json']);
+        msApiProvider.register('pesa.rjson', ['app/data/pesa/rechazos/data.json']);
         msApiProvider.register('pesa.variables', ['http://gestionagricolaapi.azurewebsites.net/api/variable',null,{'get': { method:'get', isArray: true }}]);
         msApiProvider.register('pesa.bananas', ['http://gestionagricolaapi.azurewebsites.net/api/banano',null,{'get': { method:'get', isArray: true }}]);
     }

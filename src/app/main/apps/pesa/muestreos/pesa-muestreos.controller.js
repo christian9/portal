@@ -17,11 +17,23 @@
                     "grupo":banana["Group"],
                     "cable":banana["Cable"]
                 };
+                //console.log(banana);
                 return cable;
             }
         }
-    }    
+    } 
 
+    //Parse raw data from table storage 
+    function hasGraph(title,graphs)
+    {
+        for(var graph in graphs){
+            var graphObj = graphs[graph]
+            if(graphObj["title"]==title){
+                return graph
+            }
+        }
+        return -1
+    }   
     //Parse raw data from table storage 
     function dataByDays(varData,banData)
     {
@@ -132,7 +144,7 @@
             }
         }
         var values = {};
-        var graphVals = [];
+        var graphVals = {};
         //4-Get graph data 
         for(var line in porFecha) {
             var lineo = porFecha[line];
@@ -154,31 +166,73 @@
                 }
             }
             //Iterate through variables to get tabs data
-            // for(var keyo in lineo){
-            //     if(keyo != "Variables" && keyo != "Cantidad"){
-            //         var lineo2 = lineo[keyo]; 
-            //         var variables2 = lineo2["Variables"];    
-            //         if(graphVals[keyo]){
-            //             graphVals[keyo].push({"x":daysDiff,"y":variables[keyo]});
-            //         }
-            //         else{
-            //             graphVals[keyo] = [];
-                        
-            //             values[keyo].push({"x":daysDiff,"y":variables[keyo]});
-            //         }           
-            //         for(var key2 in variables2){
-            //         }
-            //     }
-            // }
+            for(var keyo in lineo){
+                if(keyo != "Variables" && keyo != "Cantidad"){
+                    var lineo2 = lineo[keyo]; 
+                    var variables2 = lineo2["Variables"];    
+                    if(graphVals[keyo]){                                  
+                        for(var key2 in variables2){
+                            var ind = hasGraph(key2,graphVals[keyo]);
+                            if(ind != -1){
+                                graph = graphVals[keyo][ind];
+                                graph["value"] += variables2[key2];
+                                graph["cantidad"] += 1;
+                                graph["chart"]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graphVals[keyo][ind] = graph;
+                            }
+                            else{
+                                graph = {};
+                                graph["title"] = key2;
+                                graph["value"] = variables2[key2];
+                                graph["cantidad"] = 1;
+                                graph["chart"] = {};
+                                graph["chart"]["key"] = "Promedio"
+                                graph["chart"]["values"] = []
+                                graph["chart"]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graphVals[keyo].push(graph);
+                            }
+                        }
+                    }
+                    else{
+                        graphVals[keyo] = [];                                 
+                        for(var key2 in variables2){
+                            var ind = hasGraph(key2,graphVals[keyo]);
+                            if(ind != -1){
+                                var graph = graphVals[keyo][ind];
+                                graph["value"] += variables2[key2];
+                                graph["cantidad"] += 1;
+                                graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graphVals[keyo][ind] = graph;
+                            }
+                            else{
+                                var graph = {};
+                                graph["title"] = key2;
+                                graph["value"] = variables2[key2];
+                                graph["cantidad"] = 1;
+                                graph["chart"] = [{}];
+                                graph["chart"][0]["key"] = "Promedio"
+                                graph["chart"][0]["values"] = []
+                                graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graphVals[keyo].push(graph);
+                            }
+                        }
+                    } 
+                }
+            }
 
         }
         var bigChart = [];
+        var tabs = [];
         //5-Create graph structures
         for(var val in values){
-            bigChart.push({"key":val,"values":values[key]});
+            bigChart.push({"key":val,"values":values[val]});
+        }
+        for(var graphVal in graphVals){
+            tabs.push({"label":graphVal, "graphs":graphVals[graphVal]})
         }
         porFecha["BigChart"] = bigChart;
-        return porFecha
+        porFecha["Tabs"] = tabs;
+        return porFecha;
     }
 
     /** @ngInject */
@@ -189,7 +243,8 @@
         // Data
         vm.jsonData = JsonData;
         var varData = dataByDays(VariableData,BananaData);
-        //console.log(varData.BigChart);
+        //vm.jsonData.widget2.tabs = varData.Tabs;
+        //console.log(varData.Tabs);
         // Widget 1
         vm.widget1 = {
             title: vm.jsonData.widget1.title,
@@ -248,17 +303,21 @@
             }
         };
 
+        //console.log(vm.jsonData.widget2);
         vm.widget2 = {
             title             : vm.jsonData.widget2.title,
-            tabs              : vm.jsonData.widget2.tabs,
+            tabs              : varData.Tabs,
         }
+        //console.log(vm.widget2);
 
         var graphColors = [['#03A9F4'],['#3F51B5'],['#E91E63'],['#009688']]
 
         for(var tab in vm.widget2.tabs) {
-            tab = vm.widget2.tabs[tab]
+            tab = vm.widget2.tabs[tab];
+            //console.log(tab);
             var n = 0;
-            for(var graph in tab.graphs) {           
+            for(var graph in tab.graphs) {
+                          
                 graph = tab.graphs[graph];
                 graph.options = {
                     chart: {

@@ -167,6 +167,7 @@
         //Get Data
         vm.jsonData = JsonData;
         var byDays = dataByDays(VariableData)
+        //console.log(vm.jsonData)
         //console.log('variables: ', byDays);
         //console.log('bananas: ', BananaData);
         vm.colors = ['blue-bg', 'blue-grey-bg', 'orange-bg', 'pink-bg', 'purple-bg'];
