@@ -27,12 +27,13 @@
     function hasGraph(title,graphs)
     {
         for(var graph in graphs){
-            var graphObj = graphs[graph]
+            var graphObj = graphs[graph];
+            //console.log(graphObj);
             if(graphObj["title"]==title){
-                return graph
+                return graph;
             }
         }
-        return -1
+        return -1;
     }   
     //Parse raw data from table storage 
     function dataByDays(varData,banData)
@@ -175,9 +176,11 @@
                             var ind = hasGraph(key2,graphVals[keyo]);
                             if(ind != -1){
                                 graph = graphVals[keyo][ind];
+                                //console.log("YAESTABA ");
+                                //console.log(graph);
                                 graph["value"] += variables2[key2];
                                 graph["cantidad"] += 1;
-                                graph["chart"]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
                                 graphVals[keyo][ind] = graph;
                             }
                             else{
@@ -185,10 +188,12 @@
                                 graph["title"] = key2;
                                 graph["value"] = variables2[key2];
                                 graph["cantidad"] = 1;
-                                graph["chart"] = {};
-                                graph["chart"]["key"] = "Promedio"
-                                graph["chart"]["values"] = []
-                                graph["chart"]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graph["chart"] = [{}];
+                                graph["chart"][0]["key"] = "Promedio"
+                                graph["chart"][0]["values"] = []
+                                graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                //console.log("NOESTABA ");
+                                //console.log(graph);
                                 graphVals[keyo].push(graph);
                             }
                         }
