@@ -9,12 +9,12 @@
     //Parse raw data from table storage 
     function getCable(date,numTravel,banData)
     {
-        console.log(banData);
+        //console.log(banData);
         for(var banana in banData){
             banana = banData[banana];
             var bananaDate = new Date(banana["Time"]);
             if(banana["TravelNumber"]==numTravel && bananaDate.getDate()==date.getDate() && bananaDate.getMonth()==date.getMonth() && bananaDate.getFullYear()==date.getFullYear()){
-                console.log(banana);
+                //console.log(banana);
                 var cable = {
                     "grupo":banana["Group"],
                     "cable":banana["Cable"]
@@ -245,6 +245,7 @@
         }
         porFecha["BigChart"] = bigChart;
         porFecha["Tabs"] = tabs;
+        //console.log(porFecha);
         return porFecha;
     }
 
@@ -265,7 +266,7 @@
                 options: {
                     chart: {
                         type                   : 'multiBarChart',
-                        color                  : ['#4caf50', '#3f51b5', '#ff5722', '#4c465f', '#3f25bf', '#f3e72f'],
+                        color                  : ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff','#ff00ff'],
                         height                 : 320,
                         margin                 : {
                             top   : 32,

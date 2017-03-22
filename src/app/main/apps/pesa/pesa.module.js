@@ -8,7 +8,7 @@
             'app.pesa.viajes',
             'app.pesa.rechazos',
             'app.pesa.muestreos',
-            'app.pesa.perfiles'
+            //'app.pesa.perfiles'
         ])
 
         .config(config);
@@ -46,10 +46,10 @@
             state: 'app.pesa_muestreos',
         });
 
-        msNavigationServiceProvider.saveItem('apps.pesa.perfiles', {
-            title: 'Perfiles',
-            state: 'app.pesa_perfiles'
-        });
+        // msNavigationServiceProvider.saveItem('apps.pesa.perfiles', {
+        //     title: 'Perfiles',
+        //     state: 'app.pesa_perfiles'
+        // });
     }
 
 })();
