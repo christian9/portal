@@ -266,7 +266,7 @@
                 options: {
                     chart: {
                         type                   : 'multiBarChart',
-                        color                  : ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff','#ff00ff'],
+                        color                  : ['#03A9F4','#3F51B5','#E91E63','#009688', '#ffff00', '#00ffff','#ff00ff'],
                         height                 : 320,
                         margin                 : {
                             top   : 32,
