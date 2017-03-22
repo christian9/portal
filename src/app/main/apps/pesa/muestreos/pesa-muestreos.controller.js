@@ -9,19 +9,20 @@
     //Parse raw data from table storage 
     function getCable(date,numTravel,banData)
     {
+        console.log(banData);
         for(var banana in banData){
             banana = banData[banana];
             var bananaDate = new Date(banana["Time"]);
             if(banana["TravelNumber"]==numTravel && bananaDate.getDate()==date.getDate() && bananaDate.getMonth()==date.getMonth() && bananaDate.getFullYear()==date.getFullYear()){
+                console.log(banana);
                 var cable = {
                     "grupo":banana["Group"],
                     "cable":banana["Cable"]
                 };
-                //console.log(banana);
                 return cable;
             }
         }
-    } 
+    }
 
     //Parse raw data from table storage 
     function hasGraph(title,graphs)
@@ -215,8 +216,8 @@
                                 graph["value"] = variables2[key2];
                                 graph["cantidad"] = 1;
                                 graph["chart"] = [{}];
-                                graph["chart"][0]["key"] = "Promedio"
-                                graph["chart"][0]["values"] = []
+                                graph["chart"][0]["key"] = "Promedio";
+                                graph["chart"][0]["values"] = [];
                                 graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
                                 graphVals[keyo].push(graph);
                             }
@@ -233,7 +234,14 @@
             bigChart.push({"key":val,"values":values[val]});
         }
         for(var graphVal in graphVals){
-            tabs.push({"label":graphVal, "graphs":graphVals[graphVal]})
+            var obj = graphVals[graphVal];
+            for(var i in obj){
+                var element = obj[i];
+                element["value"] /= element["cantidad"];
+                element["value"] = element["value"].toFixed(2);
+                obj[i] = element;
+            }
+            tabs.push({"label":graphVal, "graphs":obj});
         }
         porFecha["BigChart"] = bigChart;
         porFecha["Tabs"] = tabs;
@@ -256,8 +264,8 @@
             chart: {
                 options: {
                     chart: {
-                        type                   : 'lineChart',
-                        color                  : ['#4caf50', '#3f51b5', '#ff5722'],
+                        type                   : 'multiBarChart',
+                        color                  : ['#4caf50', '#3f51b5', '#ff5722', '#4c465f', '#3f25bf', '#f3e72f'],
                         height                 : 320,
                         margin                 : {
                             top   : 32,
@@ -326,7 +334,7 @@
                 graph = tab.graphs[graph];
                 graph.options = {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : graphColors[n%4],
                         height                 : 40,
                         margin                 : {

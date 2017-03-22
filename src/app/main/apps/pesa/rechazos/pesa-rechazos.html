@@ -13,7 +13,7 @@
                 <ms-widget-front class="white-bg">
 
                     <div class="p-24 border-bottom" layout="row" layout-align="space-between center">
-                        <div class="h3">{{vm.widget1.title}}</div>
+                        <div class="h3">{{vm.widget1.Title}}</div>
                         <!--<div class="text-boxed green-600-bg white-fg">{{vm.widget1.onlineUsers}} online users</div>-->
                     </div>
 
@@ -43,7 +43,7 @@
                 <ms-widget-front class="white-bg">
 
                     <div class="p-24 border-bottom" layout="row" layout-align="space-between center">
-                        <div class="h3">{{vm.widget2.title}}</div>
+                        <div class="h3">{{vm.widget2.Title}}</div>
                         <!--<div class="text-boxed green-600-bg white-fg">{{vm.widget1.onlineUsers}} online users</div>-->
                     </div>
                     <div layout="row" layout-align="start center" layout-wrap>
@@ -52,17 +52,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.moho.title}}
+                                    {{vm.widget2.charts[0].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.moho.value}}
+                                    {{vm.widget2.charts[0].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.moho.options"
-                                          data="vm.widget2.moho.data"></nvd3>
+                                          options="vm.widget2.charts[0].Options"
+                                          data="vm.widget2.charts[0].Data"></nvd3>
                                 </div>
                             </div>
                         </div>
@@ -73,17 +73,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.madurez.title}}
+                                    {{vm.widget2.charts[1].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.madurez.value}}
+                                    {{vm.widget2.charts[1].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.madurez.options"
-                                          data="vm.widget2.madurez.data"></nvd3>
+                                          options="vm.widget2.charts[1].Options"
+                                          data="vm.widget2.charts[1].Data"></nvd3>
                                 </div>
                             </div>
                         </div>
@@ -94,17 +94,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.golpe.title}}
+                                    {{vm.widget2.charts[2].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.golpe.value}}
+                                    {{vm.widget2.charts[2].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.golpe.options"
-                                          data="vm.widget2.golpe.data"></nvd3>
+                                          options="vm.widget2.charts[2].Options"
+                                          data="vm.widget2.charts[2].Data"></nvd3>
                                 </div>
                             </div>
                         </div>
@@ -115,17 +115,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.patogeno.title}}
+                                    {{vm.widget2.charts[3].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.patogeno.value}}
+                                    {{vm.widget2.charts[3].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.patogeno.options"
-                                          data="vm.widget2.patogeno.data"></nvd3>
+                                          options="vm.widget2.charts[3].Options"
+                                          data="vm.widget2.charts[3].Data"></nvd3>
                                 </div>
                             </div>
                         </div>
@@ -136,17 +136,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.cochinilla.title}}
+                                    {{vm.widget2.charts[4].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.cochinilla.value}}
+                                    {{vm.widget2.charts[4].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.cochinilla.options"
-                                          data="vm.widget2.cochinilla.data"></nvd3>
+                                          options="vm.widget2.charts[4].Options"
+                                          data="vm.widget2.charts[4].Data"></nvd3>
                                 </div>
                             </div>
                         </div>
@@ -157,17 +157,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.tamano.title}}
+                                    {{vm.widget2.charts[5].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.tamano.value}}
+                                    {{vm.widget2.charts[5].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.tamano.options"
-                                          data="vm.widget2.tamano.data"></nvd3>
+                                          options="vm.widget2.charts[5].Options"
+                                          data="vm.widget2.charts[5].Data"></nvd3>
                                 </div>
                             </div>
                         </div>
@@ -178,17 +178,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.hongo.title}}
+                                    {{vm.widget2.charts[6].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.hongo.value}}
+                                    {{vm.widget2.charts[6].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.hongo.options"
-                                          data="vm.widget2.hongo.data"></nvd3>
+                                          options="vm.widget2.charts[6].Options"
+                                          data="vm.widget2.charts[6].Data"></nvd3>
                                 </div>
                             </div>
                         </div>
@@ -199,17 +199,17 @@
                              flex-gt-md="25">
                             <div layout="column" flex>
                                 <div class="h3 secondary-text pb-8">
-                                    {{vm.widget2.mordida.title}}
+                                    {{vm.widget2.charts[7].Title}}
                                 </div>
 
                                 <div class="font-size-32 line-height-32 pb-16">
-                                    {{vm.widget2.mordida.value}}
+                                    {{vm.widget2.charts[7].Value}}
                                 </div>
 
                                 <div>
                                     <nvd3 class="h-40"
-                                          options="vm.widget2.mordida.options"
-                                          data="vm.widget2.mordida.data"></nvd3>
+                                          options="vm.widget2.charts[7].Options"
+                                          data="vm.widget2.charts[7].Data"></nvd3>
                                 </div>
                             </div>
                         </div>

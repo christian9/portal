@@ -92,7 +92,7 @@
                 previous: vm.dashboardData.widget1.sessions.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#03A9F4'],
                         height                 : 40,
                         margin                 : {
@@ -140,7 +140,7 @@
                 previous: vm.dashboardData.widget1.pageviews.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#3F51B5'],
                         height                 : 40,
                         margin                 : {
@@ -188,7 +188,7 @@
                 previous: vm.dashboardData.widget1.pagesSessions.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#E91E63'],
                         height                 : 40,
                         margin                 : {
@@ -236,7 +236,7 @@
                 previous: vm.dashboardData.widget1.avgSessionDuration.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#009688'],
                         height                 : 40,
                         margin                 : {

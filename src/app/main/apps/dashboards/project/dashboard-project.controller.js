@@ -131,7 +131,7 @@
                     },
                     options: {
                         chart: {
-                            type                   : 'lineChart',
+                            type                   : 'historicalBarChart',
                             color                  : ['#03A9F4'],
                             height                 : 50,
                             margin                 : {
@@ -380,7 +380,7 @@
                 },
                 options: {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#00BCD4'],
                         height                 : 50,
                         margin                 : {

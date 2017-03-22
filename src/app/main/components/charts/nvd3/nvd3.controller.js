@@ -11,10 +11,10 @@
         var vm = this;
 
         // Data
-        vm.lineChart = {
+        vm.historicalBarChart = {
             options: {
                 chart   : {
-                    type                   : 'lineChart',
+                    type                   : 'historicalBarChart',
                     height                 : 450,
                     margin                 : {
                         top   : 20,
@@ -443,7 +443,7 @@
 
         };
 
-        vm.sparklineChart = {
+        vm.sparkhistoricalBarChart = {
             options: {
                 chart: {
                     type              : 'sparklinePlus',
@@ -454,7 +454,7 @@
                     },
                     xTickFormat       : function (d)
                     {
-                        return d3.time.format('%x')(new Date(vm.sparklineChart.data[d].x));
+                        return d3.time.format('%x')(new Date(vm.sparkhistoricalBarChart.data[d].x));
                     },
                     transitionDuration: 250
                 }

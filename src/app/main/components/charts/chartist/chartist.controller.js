@@ -13,7 +13,7 @@
         // Data
 
         // line chart
-        vm.lineChart = {
+        vm.historicalBarChart = {
             data   : {
                 labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 series: [
@@ -44,7 +44,7 @@
             }
         };
 
-        vm.biPolarLineChart = {
+        vm.biPolarhistoricalBarChart = {
             data   : {
                 labels: [1, 2, 3, 4, 5, 6, 7, 8],
                 series: [

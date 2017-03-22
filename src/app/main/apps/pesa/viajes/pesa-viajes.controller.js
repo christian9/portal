@@ -161,22 +161,22 @@
     }
 
     /** @ngInject */
-    function PesaViajesController(DashboardData, VariableData, BananaData)
+    function PesaViajesController(JsonData, VariableData, BananaData)
     {
         var vm = this;
 
         // Data
-        vm.dashboardData = DashboardData;
+        vm.jsonData = JsonData;
         vm.colors = ['blue-bg', 'blue-grey-bg', 'orange-bg', 'pink-bg', 'purple-bg'];
         var byDays = dataByDays(VariableData)
 
         vm.widget1 = {
-            title             : vm.dashboardData.widget1.title,
-            onlineUsers       : vm.dashboardData.widget1.onlineUsers,
+            title             : vm.jsonData.widget1.title,
+            onlineUsers       : vm.jsonData.widget1.onlineUsers,
             bigChart          : {
                 options: {
                     chart: {
-                        type                   : 'lineWithFocusChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#2196F3'],
                         height                 : 400,
                         margin                 : {
@@ -239,15 +239,15 @@
                         }
                     }
                 },
-                data   : vm.dashboardData.widget1.bigChart.chart
+                data   : vm.jsonData.widget1.bigChart.chart
             },
             sessions          : {
-                title   : vm.dashboardData.widget1.sessions.title,
-                value   : vm.dashboardData.widget1.sessions.value,
-                previous: vm.dashboardData.widget1.sessions.previous,
+                title   : vm.jsonData.widget1.sessions.title,
+                value   : vm.jsonData.widget1.sessions.value,
+                previous: vm.jsonData.widget1.sessions.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#03A9F4'],
                         height                 : 40,
                         margin                 : {
@@ -287,15 +287,15 @@
                         }
                     }
                 },
-                data    : vm.dashboardData.widget1.sessions.chart
+                data    : vm.jsonData.widget1.sessions.chart
             },
             pageviews         : {
-                title   : vm.dashboardData.widget1.pageviews.title,
-                value   : vm.dashboardData.widget1.pageviews.value,
-                previous: vm.dashboardData.widget1.pageviews.previous,
+                title   : vm.jsonData.widget1.pageviews.title,
+                value   : vm.jsonData.widget1.pageviews.value,
+                previous: vm.jsonData.widget1.pageviews.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#3F51B5'],
                         height                 : 40,
                         margin                 : {
@@ -335,15 +335,15 @@
                         }
                     }
                 },
-                data    : vm.dashboardData.widget1.pageviews.chart
+                data    : vm.jsonData.widget1.pageviews.chart
             },
             pagesSessions     : {
-                title   : vm.dashboardData.widget1.pagesSessions.title,
-                value   : vm.dashboardData.widget1.pagesSessions.value,
-                previous: vm.dashboardData.widget1.pagesSessions.previous,
+                title   : vm.jsonData.widget1.pagesSessions.title,
+                value   : vm.jsonData.widget1.pagesSessions.value,
+                previous: vm.jsonData.widget1.pagesSessions.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#E91E63'],
                         height                 : 40,
                         margin                 : {
@@ -383,15 +383,15 @@
                         }
                     }
                 },
-                data    : vm.dashboardData.widget1.pagesSessions.chart
+                data    : vm.jsonData.widget1.pagesSessions.chart
             },
             avgSessionDuration: {
-                title   : vm.dashboardData.widget1.avgSessionDuration.title,
-                value   : vm.dashboardData.widget1.avgSessionDuration.value,
-                previous: vm.dashboardData.widget1.avgSessionDuration.previous,
+                title   : vm.jsonData.widget1.avgSessionDuration.title,
+                value   : vm.jsonData.widget1.avgSessionDuration.value,
+                previous: vm.jsonData.widget1.avgSessionDuration.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#009688'],
                         height                 : 40,
                         margin                 : {
@@ -438,21 +438,21 @@
                         }
                     }
                 },
-                data    : vm.dashboardData.widget1.avgSessionDuration.chart
+                data    : vm.jsonData.widget1.avgSessionDuration.chart
             }
         };
 
         // Widget 2
         vm.widget2 = {
-            title: vm.dashboardData.widget2.title
+            title: vm.jsonData.widget2.title
         };
 
         // Widget 3
         vm.widget3 = {
-            title       : vm.dashboardData.widget3.title,
-            pages       : vm.dashboardData.widget3.pages,
-            ranges      : vm.dashboardData.widget3.ranges,
-            currentRange: vm.dashboardData.widget3.currentRange,
+            title       : vm.jsonData.widget3.title,
+            pages       : vm.jsonData.widget3.pages,
+            ranges      : vm.jsonData.widget3.ranges,
+            currentRange: vm.jsonData.widget3.currentRange,
             changeRange : function (range)
             {
                 vm.widget3.currentRange(range);
@@ -460,11 +460,11 @@
         };
 
         // Widget 4
-        vm.widget4 = vm.dashboardData.widget4;
+        vm.widget4 = vm.jsonData.widget4;
 
          // Widget 6
         vm.widget6 = {
-            title       : vm.dashboardData.widget6.title,
+            title       : vm.jsonData.widget6.title,
             mainChart   : {
                 config : {
                     refreshDataOnly: true,
@@ -502,9 +502,9 @@
                 },
                 data   : []
             },
-            footerLeft  : vm.dashboardData.widget6.footerLeft,
-            footerRight : vm.dashboardData.widget6.footerRight,
-            ranges      : vm.dashboardData.widget6.ranges,
+            footerLeft  : vm.jsonData.widget6.footerLeft,
+            footerRight : vm.jsonData.widget6.footerRight,
+            ranges      : vm.jsonData.widget6.ranges,
             currentRange: '',
             changeRange : function (range)
             {
@@ -526,7 +526,7 @@
                  * If you don't need animated / live updating charts,
                  * you can simplify these greatly.
                  */
-                angular.forEach(vm.dashboardData.widget6.mainChart, function (data, index)
+                angular.forEach(vm.jsonData.widget6.mainChart, function (data, index)
                 {
                     vm.widget6.mainChart.data[index] = {
                         label: data.label,
@@ -550,11 +550,6 @@
 
         //////////
 
-        // Widget 2
-        uiGmapGoogleMapApi.then(function ()
-        {
-            vm.widget2.map = vm.dashboardData.widget2.map;
-        });
 
         // Initialize Widget 6
         vm.widget6.init();

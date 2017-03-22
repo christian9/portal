@@ -6,6 +6,19 @@
         .module('app.pesa.rechazos')
         .controller('PesaRechazosController', PesaRechazosController);
 
+
+    //Parse raw data from table storage 
+    function hasGraph(title,graphs)
+    {
+        for(var graph in graphs){
+            var graphObj = graphs[graph];
+            //console.log(graphObj);
+            if(graphObj["Title"]==title){
+                return graph;
+            }
+        }
+        return -1;
+    }  
     //Parse raw data from table storage 
     function dataByDays(varData)
     {    
@@ -85,57 +98,84 @@
         var tamano = [];        var tamanoTot = 0;      var tamanoVal = 0;
         var mordida = [];       var mordidaTot = 0;     var mordidaVal = 0;
         var hongo = [];         var hongoTot = 0;       var hongoVal = 0;
+        porFecha["Charts"] = [];
         for(var key in porFecha) {
-            var pf = porFecha[key];
-            //Calculate difference in dates to give the chart "x" value. 0=today, -1=yesterday, 1=tomorrow, ...
-            var today = new Date();
-            var parts = key.split("/")
-            var date = new Date( parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]) );
-            var timeDiff = date.getTime() - today.getTime();
-            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            //Add to certain graph depending on rejection variable(s)
-            if(pf.Moho){
-                mohoTot += pf.Moho.Cantidad
-                mohoVal += pf.Moho.Valor
-                moho.push({"x":daysDiff, "y":pf.Moho.Cantidad});
+            if(key != "Charts"){
+                var pf = porFecha[key];
+                //Calculate difference in dates to give the chart "x" value. 0=today, -1=yesterday, 1=tomorrow, ...
+                var today = new Date();
+                var parts = key.split("/")
+                var date = new Date( parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]) );
+                var timeDiff = date.getTime() - today.getTime();
+                var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                //Add to certain graph depending on rejection variable(s)
+                for(var varKey in pf){
+                    if(varKey != "Total"){
+                        //console.log(key+" - "+date+" - "+daysDiff);
+                        var dayData = pf[varKey];
+                        var ind = hasGraph(varKey,porFecha["Charts"])
+                        if(ind != -1){
+                            var gr = porFecha["Charts"][ind];
+                            gr["Cantidad"] += dayData.Cantidad;
+                            gr["Value"] += dayData.Valor;                        
+                            gr["Data"][0]["values"].push({"x":daysDiff, "y":dayData.Cantidad});
+                            porFecha["Charts"][ind] = gr;
+                        }
+                        else{
+                            var gr = {}
+                            gr["Title"] = varKey;
+                            gr["Cantidad"] = dayData.Cantidad;
+                            gr["Value"] = dayData.Valor; 
+                            gr["Data"] = [{"key":"Rechazos"}]; 
+                            gr["Data"][0]["values"] = [];                      
+                            gr["Data"][0]["values"].push({"x":daysDiff, "y":dayData.Cantidad});
+                            porFecha["Charts"].push(gr);
+                        }
+                    }
+                }
+                if(pf.Moho){
+                    mohoTot += pf.Moho.Cantidad
+                    mohoVal += pf.Moho.Valor
+                    moho.push({"x":daysDiff, "y":pf.Moho.Cantidad});
+                }
+                if(pf.Madurez){
+                    madurezTot += pf.Madurez.Cantidad
+                    madurezVal += pf.Madurez.Valor
+                    madurez.push({"x":daysDiff, "y":pf.Madurez.Cantidad});
+                }
+                if(pf.Golpe){
+                    golpeTot += pf.Golpe.Cantidad
+                    golpeVal += pf.Golpe.Valor
+                    golpe.push({"x":daysDiff, "y":pf.Golpe.Cantidad});
+                }
+                if(pf.Patogeno){
+                    patogenoTot += pf.Patogeno.Cantidad
+                    patogenoVal += pf.Patogeno.Valor
+                    patogeno.push({"x":daysDiff, "y":pf.Patogeno.Cantidad});
+                }
+                if(pf.Mordida){
+                    mordidaTot += pf.Mordida.Cantidad
+                    mordidaVal += pf.Mordida.Valor
+                    mordida.push({"x":daysDiff, "y":pf.Mordida.Cantidad});
+                }
+                if(pf.Hongo){
+                    hongoTot += pf.Hongo.Cantidad
+                    hongoVal += pf.Hongo.Valor
+                    hongo.push({"x":daysDiff, "y":pf.Hongo.Cantidad});
+                }
+                if(pf.Tamaño){
+                    tamanoTot += pf.Tamaño.Cantidad
+                    tamanoVal += pf.Tamaño.Valor
+                    tamano.push({"x":daysDiff, "y":pf.Tamaño.Cantidad});
+                }
+                if(pf.Cochinilla){
+                    cochinillaTot += pf.Cochinilla.Cantidad
+                    cochinillaVal += pf.Cochinilla.Valor
+                    cochinilla.push({"x":daysDiff, "y":pf.Cochinilla.Cantidad});
+                }
+                //Add every rejection date to bigChart
+                bigChart.push({"x":daysDiff, "y":pf.Total});
             }
-            if(pf.Madurez){
-                madurezTot += pf.Madurez.Cantidad
-                madurezVal += pf.Madurez.Valor
-                madurez.push({"x":daysDiff, "y":pf.Madurez.Cantidad});
-            }
-            if(pf.Golpe){
-                golpeTot += pf.Golpe.Cantidad
-                golpeVal += pf.Golpe.Valor
-                golpe.push({"x":daysDiff, "y":pf.Golpe.Cantidad});
-            }
-            if(pf.Patogeno){
-                patogenoTot += pf.Patogeno.Cantidad
-                patogenoVal += pf.Patogeno.Valor
-                patogeno.push({"x":daysDiff, "y":pf.Patogeno.Cantidad});
-            }
-            if(pf.Mordida){
-                mordidaTot += pf.Mordida.Cantidad
-                mordidaVal += pf.Mordida.Valor
-                mordida.push({"x":daysDiff, "y":pf.Mordida.Cantidad});
-            }
-            if(pf.Hongo){
-                hongoTot += pf.Hongo.Cantidad
-                hongoVal += pf.Hongo.Valor
-                hongo.push({"x":daysDiff, "y":pf.Hongo.Cantidad});
-            }
-            if(pf.Tamaño){
-                tamanoTot += pf.Tamaño.Cantidad
-                tamanoVal += pf.Tamaño.Valor
-                tamano.push({"x":daysDiff, "y":pf.Tamaño.Cantidad});
-            }
-            if(pf.Cochinilla){
-                cochinillaTot += pf.Cochinilla.Cantidad
-                cochinillaVal += pf.Cochinilla.Valor
-                cochinilla.push({"x":daysDiff, "y":pf.Cochinilla.Cantidad});
-            }
-            //Add every rejection date to bigChart
-            bigChart.push({"x":daysDiff, "y":pf.Total});
         }
         //Get average of each rejection type
         mohoVal         /=  mohoTot;      
@@ -146,6 +186,12 @@
         tamanoVal       /=  tamanoTot;
         mordidaVal      /=  mordidaTot;
         hongoVal        /=  hongoTot;
+        for(var ind in porFecha["Charts"]) {
+            var pfc = porFecha["Charts"][ind];
+            pfc["Value"] /= pfc["Cantidad"];
+            pfc["Value"] = pfc["Value"].toFixed(2);
+            //console.log(pfc);
+        }
         //Assign graphs and averages to same structure in case all the information is needed
         porFecha["BigChart"] = bigChart;
         porFecha["Mordida"] = {"Avg":mordidaVal, "Data":mordida};
@@ -197,8 +243,8 @@
             bigChart          : {
                 options: {
                     chart: {
-                        type                   : 'lineWithFocusChart',
-                        color                  : ['#2196F3'],
+                        type                   : 'historicalBarChart',
+                        color                  : ['#2196F3'], 
                         height                 : 400,
                         margin                 : {
                             top   : 32,
@@ -268,13 +314,14 @@
         //Widget 2
         vm.widget2 = {
             title             : vm.jsonData.widget2.title,
+            charts            : byDays.Charts,
             moho          : {
                 title   : vm.jsonData.widget2.moho.title,
                 value   : vm.jsonData.widget2.moho.value,
                 previous: vm.jsonData.widget2.moho.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#03A9F4'],
                         height                 : 40,
                         margin                 : {
@@ -322,7 +369,7 @@
                 previous: vm.jsonData.widget2.madurez.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#3F51B5'],
                         height                 : 40,
                         margin                 : {
@@ -370,7 +417,7 @@
                 previous: vm.jsonData.widget2.golpe.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#E91E63'],
                         height                 : 40,
                         margin                 : {
@@ -418,7 +465,7 @@
                 previous: vm.jsonData.widget2.patogeno.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#009688'],
                         height                 : 40,
                         margin                 : {
@@ -473,7 +520,7 @@
                 previous: vm.jsonData.widget2.cochinilla.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#03A9F4'],
                         height                 : 40,
                         margin                 : {
@@ -521,7 +568,7 @@
                 previous: vm.jsonData.widget2.tamano.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#3F51B5'],
                         height                 : 40,
                         margin                 : {
@@ -569,7 +616,7 @@
                 previous: vm.jsonData.widget2.hongo.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#E91E63'],
                         height                 : 40,
                         margin                 : {
@@ -617,7 +664,7 @@
                 previous: vm.jsonData.widget2.mordida.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#009688'],
                         height                 : 40,
                         margin                 : {
@@ -666,7 +713,65 @@
                 },
                 data    : vm.jsonData.widget2.mordida.chart
             }
-        };
+        };    
+        var graphColors = [['#03A9F4'],['#3F51B5'],['#E91E63'],['#009688']]        
+        var n = 0;
+        for(var ind in vm.widget2.charts) {
+                    
+            var graph = vm.widget2.charts[ind];            
+            graph.Options = {
+                chart: {
+                    type                   : 'historicalBarChart',
+                    color                  : graphColors[n%4],
+                    height                 : 40,
+                    margin                 : {
+                        top   : 4,
+                        right : 4,
+                        bottom: 4,
+                        left  : 4
+                    },
+                    isArea                 : true,
+                    interpolate            : 'cardinal',
+                    clipEdge               : true,
+                    duration               : 500,
+                    showXAxis              : false,
+                    showYAxis              : false,
+                    showLegend             : false,
+                    useInteractiveGuideline: true,
+                    x                      : function (d)
+                    {
+                        return d.x;
+                    },
+                    y                      : function (d)
+                    {
+                        return d.y;
+                    },
+                    xAxis                  : {
+                        tickFormat: function (d)
+                        {
+                            var date = new Date(new Date().setDate(new Date().getDate() + d));
+                            return d3.time.format('%A, %B %d, %Y')(date);
+                        }
+                    },
+                    yAxis                  : {
+                        tickFormat: function (d)
+                        {
+                            var formatTime = d3.time.format('%M:%S');
+                            return formatTime(new Date('2012', '0', '1', '0', '0', d));
+                        }
+                    },
+                    interactiveLayer       : {
+                        tooltip: {
+                            gravity: 's',
+                            classes: 'gravity-s'
+                        }
+                    }
+                }
+            }
+            vm.widget2.charts[ind] = graph;
+            //console.log(vm.widget2.charts[ind]);
+            n+=1;
+        }
         ////
         //Widget 3
         vm.widget3 = {
@@ -677,7 +782,7 @@
                 previous: vm.jsonData.widget3.sessions.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#03A9F4'],
                         height                 : 40,
                         margin                 : {
@@ -725,7 +830,7 @@
                 previous: vm.jsonData.widget3.pageviews.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#3F51B5'],
                         height                 : 40,
                         margin                 : {
@@ -773,7 +878,7 @@
                 previous: vm.jsonData.widget3.pagesSessions.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#E91E63'],
                         height                 : 40,
                         margin                 : {
@@ -821,7 +926,7 @@
                 previous: vm.jsonData.widget3.avgSessionDuration.previous,
                 options : {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#009688'],
                         height                 : 40,
                         margin                 : {

@@ -251,7 +251,7 @@
             chart: {
                 options: {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : ['#4caf50', '#3f51b5', '#ff5722'],
                         height                 : 320,
                         margin                 : {
@@ -321,7 +321,7 @@
                 graph = tab.graphs[graph];
                 graph.options = {
                     chart: {
-                        type                   : 'lineChart',
+                        type                   : 'historicalBarChart',
                         color                  : graphColors[n%4],
                         height                 : 40,
                         margin                 : {

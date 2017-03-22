@@ -11,7 +11,7 @@
         var vm = this;
 
         // Data
-        vm.lineChart = {
+        vm.historicalBarChart = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             series: ['Series A', 'Series B'],
             data  : [
