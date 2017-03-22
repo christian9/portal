@@ -6,6 +6,129 @@
         .module('app.pesa.viajes')
         .controller('PesaViajesController', PesaViajesController);
 
+    function isValidDate(d){
+        if ( Object.prototype.toString.call(d) === "[object Date]" ) {
+            // it is a date
+            if ( isNaN( d.getTime() ) ) {  // d.valueOf() could also work
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    function parseData(banData){
+        var travels = [];
+        //console.log(banData);
+        for (var banana in banData) {
+            banana = banData[banana];
+            //console.log(banana); 
+            var newTravel = true;
+            var fecha =  new Date(banana["Time"]);
+            if(isValidDate(fecha)){
+                for (var travel in travels) {
+                    travel = travels[travel];
+                    if (travel["Fecha"].getDay() == fecha.getDay() && travel["Fecha"].getMonth() == fecha.getMonth() && travel["Fecha"].getFullYear() == fecha.getFullYear() && travel["Viaje"] == banana["TravelNumber"]) {
+                        travel["PesoTotal"] += banana["Weight"];
+                        travel["CantidadTotal"] += 1;
+                        if (travel["Cantidad" + banana["Color"]]) {
+                            travel["Cantidad" + banana["Color"]] += 1;
+                        } else {
+                            travel["Cantidad" + banana["Color"]] = 1;
+                        }
+                        if (travel["Peso" + banana["Color"]]) {
+                            travel["Peso" + banana["Color"]] += banana["Weight"];
+                        } else {
+                            travel["Peso" + banana["Color"]] = banana["Weight"];
+                        }
+                        newTravel = false;
+                        break;
+                    }
+                };
+                if (newTravel) {
+                    var travel = {}
+                    travel["Fecha"] = fecha;
+                    travel["Viaje"] = banana["TravelNumber"];
+                    travel["Grupo"] = banana["Group"];
+                    travel["Cable"] = banana["Cable"];
+                    travel["Carrero"] = banana["Carrero"];
+                    travel["Cuadrilla"] = banana["Cuadrilla"];
+                    travel["Mercado"] = banana["Market"];
+                    travel["Finca"] = banana["Finca"];
+                    travel["Embarque"] = banana["Shipment"];
+                    travel["Peso" + banana["Color"]] = banana["Weight"];
+                    travel["Cantidad" + banana["Color"]] = 1;
+                    travel["PesoTotal"] = banana["Weight"];
+                    travel["CantidadTotal"] = 1;
+                    travels.push(travel);
+                };
+            }
+            // else{
+            //     console.log(banana);
+            // }
+        };
+
+        travels.sort(function (x, y) {
+            var a = x["Fecha"];
+            var b = y["Fecha"];
+            a = a.getTime();
+            b = b.getTime();
+            return a < b ? -1 : a > b ? 1 : 0;
+        });
+
+        var porFecha = {};
+        for(var t in travels){
+            var travel = travels[t];
+            //console.log(travel)
+            var strDate = travel["Fecha"].toLocaleDateString('en-GB');
+            if(porFecha[strDate]){
+                porFecha[strDate]["Cantidad"] += travel["CantidadTotal"];
+                porFecha[strDate]["Peso"] += travel["PesoTotal"];
+                if(porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]){
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Cantidad"]+=travel["CantidadTotal"]
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Peso"]+=travel["PesoTotal"]
+                }
+                else{
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]={}
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Cantidad"]=travel["CantidadTotal"]
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Peso"]=travel["PesoTotal"]
+                }
+            }
+            else{
+                porFecha[strDate] = {};
+                porFecha[strDate]["Cantidad"] = travel["CantidadTotal"];
+                porFecha[strDate]["Peso"] = travel["PesoTotal"];
+                if(porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]){
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Cantidad"]+=travel["CantidadTotal"]
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Peso"]+=travel["PesoTotal"]
+                }
+                else{
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]={}
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Cantidad"]=travel["CantidadTotal"]
+                    porFecha[strDate]["Grupo "+travel["Grupo"]+" - Cable "+travel["Cable"]]["Peso"]=travel["PesoTotal"]
+                }
+            }
+        }
+
+        var bigChart = [{"key":"Racimos","values":[]}];
+        for(var strDate in porFecha){   
+            var pf = porFecha[strDate];
+            //Calculate difference in dates to give the chart "x" value. 0=today, -1=yesterday, 1=tomorrow, ...
+            var today = new Date();
+            var parts = strDate.split("/")
+            var date = new Date( parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]) );
+            var timeDiff = date.getTime() - today.getTime();
+            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            bigChart[0]["values"].push({"x":daysDiff, "y":pf["Cantidad"]});
+        }
+        porFecha["Viajes"] = travels;
+        porFecha["BigChart"] = bigChart;
+        return porFecha;
+    }
 
     /** @ngInject */
     function PesaViajesController(JsonData, VariableData, BananaData)
@@ -15,8 +138,8 @@
         // Data
         vm.jsonData = JsonData;
         vm.colors = ['blue-bg', 'blue-grey-bg', 'orange-bg', 'pink-bg', 'purple-bg'];
-        //var byDays = dataByDays(VariableData)
-
+        var byDays = parseData(BananaData);
+        console.log(byDays);
         vm.widget1 = {
             title             : vm.jsonData.widget1.title,
             onlineUsers       : vm.jsonData.widget1.onlineUsers,
@@ -86,7 +209,7 @@
                         }
                     }
                 },
-                data   : vm.jsonData.widget1.bigChart.chart
+                data   : byDays.BigChart
             },
             sessions          : {
                 title   : vm.jsonData.widget1.sessions.title,
