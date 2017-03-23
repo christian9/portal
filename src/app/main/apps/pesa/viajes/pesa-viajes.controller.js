@@ -5,7 +5,18 @@
     angular
         .module('app.pesa.viajes')
         .controller('PesaViajesController', PesaViajesController);
-
+    //Parse raw data from table storage 
+    function hasGraph(title,graphs)
+    {
+        for(var graph in graphs){
+            var graphObj = graphs[graph];
+            //console.log(graphObj);
+            if(graphObj["Title"]==title){
+                return graph;
+            }
+        }
+        return -1;
+    }      
     function isValidDate(d){
         if ( Object.prototype.toString.call(d) === "[object Date]" ) {
             // it is a date
@@ -26,7 +37,7 @@
         //console.log(banData);
         for (var banana in banData) {
             banana = banData[banana];
-            //console.log(banana); 
+            console.log(banana); 
             var newTravel = true;
             var fecha =  new Date(banana["Time"]);
             if(isValidDate(fecha)){
@@ -79,11 +90,12 @@
             b = b.getTime();
             return a < b ? -1 : a > b ? 1 : 0;
         });
-
+        var total = 0;
         var porFecha = {};
         for(var t in travels){
             var travel = travels[t];
             //console.log(travel)
+            total += travel["CantidadTotal"];            
             var strDate = travel["Fecha"].toLocaleDateString('en-GB');
             if(porFecha[strDate]){
                 porFecha[strDate]["Cantidad"] += travel["CantidadTotal"];
@@ -113,20 +125,62 @@
                 }
             }
         }
-
+        porFecha["Charts"] = [];
         var bigChart = [{"key":"Racimos","values":[]}];
-        for(var strDate in porFecha){   
-            var pf = porFecha[strDate];
-            //Calculate difference in dates to give the chart "x" value. 0=today, -1=yesterday, 1=tomorrow, ...
-            var today = new Date();
-            var parts = strDate.split("/")
-            var date = new Date( parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]) );
-            var timeDiff = date.getTime() - today.getTime();
-            var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            bigChart[0]["values"].push({"x":daysDiff, "y":pf["Cantidad"]});
+        for(var strDate in porFecha){ 
+            if(strDate != "Charts")  {
+                var pf = porFecha[strDate];
+                //Calculate difference in dates to give the chart "x" value. 0=today, -1=yesterday, 1=tomorrow, ...
+                var today = new Date();
+                var parts = strDate.split("/")
+                var date = new Date( parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]) );
+                var timeDiff = date.getTime() - today.getTime();
+                var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                //Add to certain graph depending on rejection variable(s)
+                for(var cable in pf){
+                    if(cable != "Cantidad" && cable != "Peso"){
+                        //console.log(key+" - "+date+" - "+daysDiff);
+                        var cableData = pf[cable];
+                        var ind = hasGraph(cable,porFecha["Charts"])
+                        if(ind != -1){
+                            var gr = porFecha["Charts"][ind];
+                            gr["Cantidad"] += cableData.Cantidad;
+                            gr["Value"] += cableData.Peso;                        
+                            gr["Data"][0]["values"].push({"x":daysDiff, "y":cableData.Cantidad});
+                            porFecha["Charts"][ind] = gr;
+                        }
+                        else{
+                            var gr = {}
+                            gr["Title"] = cable;
+                            gr["Cantidad"] = cableData.Cantidad;
+                            gr["Value"] = cableData.Peso; 
+                            gr["Data"] = [{"key":"Racimos", "values":[]}];                    
+                            gr["Data"][0]["values"].push({"x":daysDiff, "y":cableData.Cantidad});
+                            porFecha["Charts"].push(gr);
+                        }
+                    }
+                }
+                bigChart[0]["values"].push({"x":daysDiff, "y":pf["Cantidad"]});
+            }
         }
+        var porCable = { 
+            "ranges":{"A":"Todos"}, 
+            "mainChart":[]
+        }
+        var maximo = 0;
+        for(var c in porFecha["Charts"]){
+            var chart = porFecha["Charts"][c];
+            chart["Value"] /= chart["Cantidad"];
+            porCable["mainChart"].push( {"label":chart["Title"], "values":{"A":chart["Cantidad"]}} );
+            if(chart["Cantidad"]>maximo){
+                maximo = chart["Cantidad"];
+            }
+        }
+        porCable["footerLeft"] = {"title":"Total","count":{"A":total}};
+        porCable["footerRight"] = {"title":"Máximo","count":{"A":maximo}};
         porFecha["Viajes"] = travels;
         porFecha["BigChart"] = bigChart;
+        porFecha["PorCable"] = porCable;
         return porFecha;
     }
 
@@ -139,7 +193,7 @@
         vm.jsonData = JsonData;
         vm.colors = ['blue-bg', 'blue-grey-bg', 'orange-bg', 'pink-bg', 'purple-bg'];
         var byDays = parseData(BananaData);
-        console.log(byDays);
+        //console.log(byDays);
         vm.widget1 = {
             title             : vm.jsonData.widget1.title,
             onlineUsers       : vm.jsonData.widget1.onlineUsers,
@@ -210,228 +264,71 @@
                     }
                 },
                 data   : byDays.BigChart
-            },
-            sessions          : {
-                title   : vm.jsonData.widget1.sessions.title,
-                value   : vm.jsonData.widget1.sessions.value,
-                previous: vm.jsonData.widget1.sessions.previous,
-                options : {
-                    chart: {
-                        type                   : 'historicalBarChart',
-                        color                  : ['#03A9F4'],
-                        height                 : 40,
-                        margin                 : {
-                            top   : 4,
-                            right : 4,
-                            bottom: 4,
-                            left  : 4
-                        },
-                        isArea                 : true,
-                        interpolate            : 'cardinal',
-                        clipEdge               : true,
-                        duration               : 500,
-                        showXAxis              : false,
-                        showYAxis              : false,
-                        showLegend             : false,
-                        useInteractiveGuideline: true,
-                        x                      : function (d)
-                        {
-                            return d.x;
-                        },
-                        y                      : function (d)
-                        {
-                            return d.y;
-                        },
-                        xAxis                  : {
-                            tickFormat: function (d)
-                            {
-                                var date = new Date(new Date().setDate(new Date().getDate() + d));
-                                return d3.time.format('%A, %B %d, %Y')(date);
-                            }
-                        },
-                        interactiveLayer       : {
-                            tooltip: {
-                                gravity: 's',
-                                classes: 'gravity-s'
-                            }
-                        }
-                    }
-                },
-                data    : vm.jsonData.widget1.sessions.chart
-            },
-            pageviews         : {
-                title   : vm.jsonData.widget1.pageviews.title,
-                value   : vm.jsonData.widget1.pageviews.value,
-                previous: vm.jsonData.widget1.pageviews.previous,
-                options : {
-                    chart: {
-                        type                   : 'historicalBarChart',
-                        color                  : ['#3F51B5'],
-                        height                 : 40,
-                        margin                 : {
-                            top   : 4,
-                            right : 4,
-                            bottom: 4,
-                            left  : 4
-                        },
-                        isArea                 : true,
-                        interpolate            : 'cardinal',
-                        clipEdge               : true,
-                        duration               : 500,
-                        showXAxis              : false,
-                        showYAxis              : false,
-                        showLegend             : false,
-                        useInteractiveGuideline: true,
-                        x                      : function (d)
-                        {
-                            return d.x;
-                        },
-                        y                      : function (d)
-                        {
-                            return d.y;
-                        },
-                        xAxis                  : {
-                            tickFormat: function (d)
-                            {
-                                var date = new Date(new Date().setDate(new Date().getDate() + d));
-                                return d3.time.format('%A, %B %d, %Y')(date);
-                            }
-                        },
-                        interactiveLayer       : {
-                            tooltip: {
-                                gravity: 's',
-                                classes: 'gravity-s'
-                            }
-                        }
-                    }
-                },
-                data    : vm.jsonData.widget1.pageviews.chart
-            },
-            pagesSessions     : {
-                title   : vm.jsonData.widget1.pagesSessions.title,
-                value   : vm.jsonData.widget1.pagesSessions.value,
-                previous: vm.jsonData.widget1.pagesSessions.previous,
-                options : {
-                    chart: {
-                        type                   : 'historicalBarChart',
-                        color                  : ['#E91E63'],
-                        height                 : 40,
-                        margin                 : {
-                            top   : 4,
-                            right : 4,
-                            bottom: 4,
-                            left  : 4
-                        },
-                        isArea                 : true,
-                        interpolate            : 'cardinal',
-                        clipEdge               : true,
-                        duration               : 500,
-                        showXAxis              : false,
-                        showYAxis              : false,
-                        showLegend             : false,
-                        useInteractiveGuideline: true,
-                        x                      : function (d)
-                        {
-                            return d.x;
-                        },
-                        y                      : function (d)
-                        {
-                            return d.y;
-                        },
-                        xAxis                  : {
-                            tickFormat: function (d)
-                            {
-                                var date = new Date(new Date().setDate(new Date().getDate() + d));
-                                return d3.time.format('%A, %B %d, %Y')(date);
-                            }
-                        },
-                        interactiveLayer       : {
-                            tooltip: {
-                                gravity: 's',
-                                classes: 'gravity-s'
-                            }
-                        }
-                    }
-                },
-                data    : vm.jsonData.widget1.pagesSessions.chart
-            },
-            avgSessionDuration: {
-                title   : vm.jsonData.widget1.avgSessionDuration.title,
-                value   : vm.jsonData.widget1.avgSessionDuration.value,
-                previous: vm.jsonData.widget1.avgSessionDuration.previous,
-                options : {
-                    chart: {
-                        type                   : 'historicalBarChart',
-                        color                  : ['#009688'],
-                        height                 : 40,
-                        margin                 : {
-                            top   : 4,
-                            right : 4,
-                            bottom: 4,
-                            left  : 4
-                        },
-                        isArea                 : true,
-                        interpolate            : 'cardinal',
-                        clipEdge               : true,
-                        duration               : 500,
-                        showXAxis              : false,
-                        showYAxis              : false,
-                        showLegend             : false,
-                        useInteractiveGuideline: true,
-                        x                      : function (d)
-                        {
-                            return d.x;
-                        },
-                        y                      : function (d)
-                        {
-                            return d.y;
-                        },
-                        xAxis                  : {
-                            tickFormat: function (d)
-                            {
-                                var date = new Date(new Date().setDate(new Date().getDate() + d));
-                                return d3.time.format('%A, %B %d, %Y')(date);
-                            }
-                        },
-                        yAxis                  : {
-                            tickFormat: function (d)
-                            {
-                                var formatTime = d3.time.format('%M:%S');
-                                return formatTime(new Date('2012', '0', '1', '0', '0', d));
-                            }
-                        },
-                        interactiveLayer       : {
-                            tooltip: {
-                                gravity: 's',
-                                classes: 'gravity-s'
-                            }
-                        }
-                    }
-                },
-                data    : vm.jsonData.widget1.avgSessionDuration.chart
             }
         };
 
         // Widget 2
         vm.widget2 = {
-            title: vm.jsonData.widget2.title
+            title: vm.jsonData.widget2.title,
+            charts: byDays.Charts
         };
-
-        // Widget 3
-        vm.widget3 = {
-            title       : vm.jsonData.widget3.title,
-            pages       : vm.jsonData.widget3.pages,
-            ranges      : vm.jsonData.widget3.ranges,
-            currentRange: vm.jsonData.widget3.currentRange,
-            changeRange : function (range)
-            {
-                vm.widget3.currentRange(range);
+        
+        var graphColors = [['#03A9F4'],['#3F51B5'],['#E91E63'],['#009688']]        
+        var n = 0;
+        for(var ind in vm.widget2.charts) {
+            var graph = vm.widget2.charts[ind];            
+            graph.Options = {
+                chart: {
+                    type                   : 'historicalBarChart',
+                    color                  : graphColors[n%4],
+                    height                 : 40,
+                    margin                 : {
+                        top   : 4,
+                        right : 4,
+                        bottom: 4,
+                        left  : 4
+                    },
+                    isArea                 : true,
+                    interpolate            : 'cardinal',
+                    clipEdge               : true,
+                    duration               : 500,
+                    showXAxis              : false,
+                    showYAxis              : false,
+                    showLegend             : false,
+                    useInteractiveGuideline: true,
+                    x                      : function (d)
+                    {
+                        return d.x;
+                    },
+                    y                      : function (d)
+                    {
+                        return d.y;
+                    },
+                    xAxis                  : {
+                        tickFormat: function (d)
+                        {
+                            var date = new Date(new Date().setDate(new Date().getDate() + d));
+                            return d3.time.format('%A, %B %d, %Y')(date);
+                        }
+                    },
+                    yAxis                  : {
+                        tickFormat: function (d)
+                        {
+                            return d;
+                        }
+                    },
+                    interactiveLayer       : {
+                        tooltip: {
+                            gravity: 's',
+                            classes: 'gravity-s'
+                        }
+                    }
+                }
             }
-        };
-
-        // Widget 4
-        vm.widget4 = vm.jsonData.widget4;
-
+            vm.widget2.charts[ind] = graph;
+            console.log(vm.widget2.charts[ind]);
+            n+=1;
+        }
          // Widget 6
         vm.widget6 = {
             title       : vm.jsonData.widget6.title,
@@ -472,9 +369,9 @@
                 },
                 data   : []
             },
-            footerLeft  : vm.jsonData.widget6.footerLeft,
-            footerRight : vm.jsonData.widget6.footerRight,
-            ranges      : vm.jsonData.widget6.ranges,
+            footerLeft  : byDays.PorCable.footerLeft,
+            footerRight : byDays.PorCable.footerRight,
+            ranges      : byDays.PorCable.ranges,
             currentRange: '',
             changeRange : function (range)
             {
@@ -496,7 +393,7 @@
                  * If you don't need animated / live updating charts,
                  * you can simplify these greatly.
                  */
-                angular.forEach(vm.jsonData.widget6.mainChart, function (data, index)
+                angular.forEach(byDays.PorCable.mainChart, function (data, index)
                 {
                     vm.widget6.mainChart.data[index] = {
                         label: data.label,
@@ -511,7 +408,7 @@
                 /**
                  * Update the range for the first time
                  */
-                vm.widget6.changeRange('TW');
+                vm.widget6.changeRange('A');
             }
         };
 

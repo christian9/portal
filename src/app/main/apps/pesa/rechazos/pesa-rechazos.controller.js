@@ -299,8 +299,7 @@
                     yAxis                  : {
                         tickFormat: function (d)
                         {
-                            var formatTime = d3.time.format('%M:%S');
-                            return formatTime(new Date('2012', '0', '1', '0', '0', d));
+                            return d;
                         }
                     },
                     interactiveLayer       : {
