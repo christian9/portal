@@ -7,7 +7,7 @@
         [
             'app.pesa.viajes',
             'app.pesa.rechazos',
-            'app.pesa.muestreos',
+            'app.pesa.muestreos'
             //'app.pesa.perfiles'
         ])
 

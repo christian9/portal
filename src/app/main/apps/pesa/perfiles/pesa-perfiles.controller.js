@@ -9,30 +9,32 @@
     //Parse raw data from table storage 
     function getCable(date,numTravel,banData)
     {
+        //console.log(banData);
         for(var banana in banData){
             banana = banData[banana];
             var bananaDate = new Date(banana["Time"]);
             if(banana["TravelNumber"]==numTravel && bananaDate.getDate()==date.getDate() && bananaDate.getMonth()==date.getMonth() && bananaDate.getFullYear()==date.getFullYear()){
+                //console.log(banana);
                 var cable = {
                     "grupo":banana["Group"],
                     "cable":banana["Cable"]
                 };
-                //console.log(banana);
                 return cable;
             }
         }
-    } 
+    }
 
     //Parse raw data from table storage 
     function hasGraph(title,graphs)
     {
         for(var graph in graphs){
-            var graphObj = graphs[graph]
+            var graphObj = graphs[graph];
+            //console.log(graphObj);
             if(graphObj["title"]==title){
-                return graph
+                return graph;
             }
         }
-        return -1
+        return -1;
     }   
     //Parse raw data from table storage 
     function dataByDays(varData,banData)
@@ -41,7 +43,7 @@
         //1-Iterate through raw data to get logical samplings
         for (var variable in varData) {
             variable = varData[variable];
-            if(variable["VariablesType"] == 1){ //It's a sampling!
+            if(variable["VariablesType"] == 2){ //It's a sampling!
                 var values = {};
                 //Parse String values into real sampling variables (calibre, largo, manos, ...)
                 var str = variable["StringValues"];
@@ -175,9 +177,11 @@
                             var ind = hasGraph(key2,graphVals[keyo]);
                             if(ind != -1){
                                 graph = graphVals[keyo][ind];
+                                //console.log("YAESTABA ");
+                                //console.log(graph);
                                 graph["value"] += variables2[key2];
                                 graph["cantidad"] += 1;
-                                graph["chart"]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
                                 graphVals[keyo][ind] = graph;
                             }
                             else{
@@ -185,10 +189,12 @@
                                 graph["title"] = key2;
                                 graph["value"] = variables2[key2];
                                 graph["cantidad"] = 1;
-                                graph["chart"] = {};
-                                graph["chart"]["key"] = "Promedio"
-                                graph["chart"]["values"] = []
-                                graph["chart"]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                graph["chart"] = [{}];
+                                graph["chart"][0]["key"] = "Promedio"
+                                graph["chart"][0]["values"] = []
+                                graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
+                                //console.log("NOESTABA ");
+                                //console.log(graph);
                                 graphVals[keyo].push(graph);
                             }
                         }
@@ -210,8 +216,8 @@
                                 graph["value"] = variables2[key2];
                                 graph["cantidad"] = 1;
                                 graph["chart"] = [{}];
-                                graph["chart"][0]["key"] = "Promedio"
-                                graph["chart"][0]["values"] = []
+                                graph["chart"][0]["key"] = "Promedio";
+                                graph["chart"][0]["values"] = [];
                                 graph["chart"][0]["values"].push({"x":daysDiff,"y":variables2[key2]});
                                 graphVals[keyo].push(graph);
                             }
@@ -228,10 +234,18 @@
             bigChart.push({"key":val,"values":values[val]});
         }
         for(var graphVal in graphVals){
-            tabs.push({"label":graphVal, "graphs":graphVals[graphVal]})
+            var obj = graphVals[graphVal];
+            for(var i in obj){
+                var element = obj[i];
+                element["value"] /= element["cantidad"];
+                element["value"] = element["value"].toFixed(2);
+                obj[i] = element;
+            }
+            tabs.push({"label":graphVal, "graphs":obj});
         }
         porFecha["BigChart"] = bigChart;
         porFecha["Tabs"] = tabs;
+        //console.log(porFecha);
         return porFecha;
     }
 
@@ -251,8 +265,8 @@
             chart: {
                 options: {
                     chart: {
-                        type                   : 'historicalBarChart',
-                        color                  : ['#4caf50', '#3f51b5', '#ff5722'],
+                        type                   : 'multiBarChart',
+                        color                  : ['#03A9F4','#3F51B5','#E91E63','#009688'],
                         height                 : 320,
                         margin                 : {
                             top   : 32,

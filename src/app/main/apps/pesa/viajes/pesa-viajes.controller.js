@@ -37,7 +37,7 @@
         //console.log(banData);
         for (var banana in banData) {
             banana = banData[banana];
-            console.log(banana); 
+            //console.log(banana); 
             var newTravel = true;
             var fecha =  new Date(banana["Time"]);
             if(isValidDate(fecha)){
@@ -326,7 +326,7 @@
                 }
             }
             vm.widget2.charts[ind] = graph;
-            console.log(vm.widget2.charts[ind]);
+            //console.log(vm.widget2.charts[ind]);
             n+=1;
         }
          // Widget 6

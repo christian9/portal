@@ -27,7 +27,7 @@
             resolve  : {
                 JsonData: function (msApi)
                 {
-                    return msApi.resolve('pesa.pjson@get');
+                    return msApi.resolve('pesa.mjson@get');
                 },
                 BananaData: function (msApi)
                 {
@@ -42,7 +42,7 @@
         });
 
         // Api
-        msApiProvider.register('pesa.pjson', ['app/data/pesa/perfiles/data.json']);
+        msApiProvider.register('pesa.mjson', ['app/data/pesa/perfiles/data.json']);
         msApiProvider.register('pesa.variables', ['http://gestionagricolaapi.azurewebsites.net/api/variable',null,{'get': { method:'get', isArray: true }}]);
         msApiProvider.register('pesa.bananas', ['http://gestionagricolaapi.azurewebsites.net/api/banano',null,{'get': { method:'get', isArray: true }}]);
     }
