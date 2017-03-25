@@ -7,23 +7,60 @@
         .controller('PesaMuestreosController', PesaMuestreosController);
 
     //Parse raw data from table storage 
-    function getCable(date,numTravel,banData)
+    function getTravel(date,numTravel, numRacimo,banData)
     {
         //console.log(banData);
+        var primero = undefined;
         for(var banana in banData){
             banana = banData[banana];
             var bananaDate = new Date(banana["Time"]);
+            if(numRacimo == 0){
+                numRacimo = 1;
+            }
+            //console.log("Viaje: "+numTravel+", Racimo: "+numRacimo);
             if(banana["TravelNumber"]==numTravel && bananaDate.getDate()==date.getDate() && bananaDate.getMonth()==date.getMonth() && bananaDate.getFullYear()==date.getFullYear()){
                 //console.log(banana);
-                var cable = {
-                    "grupo":banana["Group"],
-                    "cable":banana["Cable"]
-                };
-                return cable;
-            }
+                var travel = {};
+                travel["Fecha"] = new Date(banana["Time"]);
+                travel["Viaje"] = banana["TravelNumber"];
+                travel["Grupo"] = banana["Group"];
+                travel["Cable"] = banana["Cable"];
+                travel["Carrero"] = banana["Carrero"];
+                travel["Cuadrilla"] = banana["Cuadrilla"];
+                travel["Mercado"] = banana["Market"];
+                travel["Finca"] = banana["Finca"];
+                travel["Embarque"] = banana["Shipment"];
+                travel["Color"] = banana["Color"];
+                if( banana["BananaNumber"]==numRacimo){
+                    return travel;
+                }
+                else{
+                    if(primero === undefined){
+                        primero = travel;
+                    }
+                }
+            }            
         }
-    }
+        if(primero !== undefined){
+            return primero;
+        }
+        else{
+            var banana = banData[0];
+            var travel = {};
+            travel["Fecha"] = new Date(banana["Time"]);
+            travel["Viaje"] = banana["TravelNumber"];
+            travel["Grupo"] = banana["Group"];
+            travel["Cable"] = banana["Cable"];
+            travel["Carrero"] = banana["Carrero"];
+            travel["Cuadrilla"] = banana["Cuadrilla"];
+            travel["Mercado"] = banana["Market"];
+            travel["Finca"] = banana["Finca"];
+            travel["Embarque"] = banana["Shipment"];
+            travel["Color"] = banana["Color"];
+            return travel
+        }
 
+    }
     //Parse raw data from table storage 
     function hasGraph(title,graphs)
     {
@@ -40,6 +77,7 @@
     function dataByDays(varData,banData)
     {
         var samplings = [];
+        var cols = {};
         //1-Iterate through raw data to get logical samplings
         for (var variable in varData) {
             variable = varData[variable];
@@ -52,17 +90,28 @@
                     strpair = strlist[strpair];
                     var pair = strpair.split(":");
                     values[pair[0]] = parseInt(pair[1]);
+                    if(cols[pair[0]]){
+                        cols[pair[0]]=pair[0]
+                    }
+                    else{
+                        cols[pair[0]]=pair[0]
+                    }
                 }
                 var fecha = new Date(variable["Time"]);
                 //Create rejection object, assign data and add it to result
                 var sampling = {}
                 sampling["Fecha"] = fecha;
+                sampling["Racimo"] = variable["BananaNumber"];
                 sampling["NumViaje"] = variable["TravelNumber"];
                 delete values[""];
                 sampling["Variables"] = values;
                 samplings.push(sampling);
             }
-        };
+        }
+        var samplingCols = [{"title":"Fecha"},{"title":"Viaje"},{"title":"Racimo"}];
+        for(var key in cols){
+            samplingCols.push({"title":key});
+        }
 
         //2-Order them using dates to get proper order on charts arrays. Otherwise, navigation through graph data won't work
         samplings.sort(function (x, y) {
@@ -76,11 +125,21 @@
         //3-Get samplings in date-indexed dict to easily extract graph data
         var porFecha = {};
         var porCable = {};
+        var samplingRows = [];
         for(var sampling in samplings) {
             sampling = samplings[sampling];
             var samDate = sampling["Fecha"].toLocaleDateString('en-GB');
-            var cable = getCable(sampling["Fecha"],sampling["NumViaje"],banData);
-            cable = ("G"+cable.grupo+"-C"+cable.cable);
+            var travel = getTravel(sampling["Fecha"],sampling["NumViaje"],sampling["Racimo"],banData);
+            var row =[
+                {"value":sampling["Fecha"].toLocaleDateString('en-GB'),"classes":"","icon":""},
+                {"value":sampling["NumViaje"],"classes":"","icon":""},
+                {"value":sampling["Racimo"],"classes":"","icon":""}
+            ]
+            for(var col in cols){
+                row.push({"value":sampling["Variables"][col], "classes":"","icon":""})
+            }
+            samplingRows.push(row);
+            var cable = ("G"+travel.Grupo+"-C"+travel.Cable);
             if(porFecha[samDate]){
                 var variables = porFecha[samDate]["Variables"]
                 for(var key in variables){
@@ -245,6 +304,8 @@
         }
         porFecha["BigChart"] = bigChart;
         porFecha["Tabs"] = tabs;
+        porFecha["Rows"] = samplingRows;
+        porFecha["Cols"] = samplingCols;
         //console.log(porFecha);
         return porFecha;
     }
@@ -256,9 +317,9 @@
 
         // Data
         vm.jsonData = JsonData;
-        var varData = dataByDays(VariableData,BananaData);
-        //vm.jsonData.widget2.tabs = varData.Tabs;
-        //console.log(varData.Tabs);
+        var byDays = dataByDays(VariableData,BananaData);
+        //vm.jsonData.widget2.tabs = byDays.Tabs;
+        //console.log(byDays.Tabs);
         // Widget 1
         vm.widget1 = {
             title: vm.jsonData.widget1.title,
@@ -313,14 +374,14 @@
                         }
                     }
                 },
-                data   : varData.BigChart
+                data   : byDays.BigChart
             }
         };
 
         //console.log(vm.jsonData.widget2);
         vm.widget2 = {
             title             : vm.jsonData.widget2.title,
-            tabs              : varData.Tabs,
+            tabs              : byDays.Tabs,
         }
         //console.log(vm.widget2);
 
@@ -379,6 +440,11 @@
                 n+=1;
             }
         }
+        
+        //Widget 5
+        vm.widget5 = vm.jsonData.widget5;
+        vm.widget5.table.rows =byDays.Rows;
+        vm.widget5.table.columns =byDays.Cols;
         
     }
 })();
