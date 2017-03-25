@@ -38,6 +38,52 @@
         <!-- CONTENT -->
         <div class="content" flex ms-scroll>
             <md-tabs md-dynamic-height>
+                <md-tab label="Tablas">
+                    <!-- WIDGET GROUP -->
+                    <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+                        <!-- WIDGET 5 -->
+                        <ms-widget layout="row" flex="100">
+
+                            <!-- Front -->
+                            <ms-widget-front class="white-bg">
+
+                                <div class="simple-table-container" ms-responsive-table>
+                                    <div class=" table-title">
+                                        {{vm.widget5.title}}
+                                    </div>
+
+                                    <table class="simple">
+                                        <thead>
+                                            <tr>
+                                                <th ng-repeat="column in vm.widget5.table.columns">
+                                                    {{column.title}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr ng-repeat="row in vm.widget5.table.rows">
+                                                <td ng-repeat="cell in row">
+                                                    <span class="{{cell.classes}}">
+                                                        {{cell.value}}
+                                                    </span>
+                                                    <i ng-if="cell.icon" class="icon {{cell.icon}}"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </ms-widget-front>
+                            <!-- / Front -->
+
+                        </ms-widget>
+                        <!-- / WIDGET 5 -->
+
+                    </div>
+                    <!-- / WIDGET GROUP -->
+                </md-tab>
                 <md-tab label="Gráficas">
 
                     <!-- WIDGET GROUP -->
@@ -320,52 +366,6 @@
 
                     <!-- / FIN WIDGET GROUP GRAFICAS TIPO DONA-->
 
-                </md-tab>
-                <md-tab label="Tablas">
-                    <!-- WIDGET GROUP -->
-                    <div class="widget-group" layout="row" flex="100" layout-wrap>
-
-                        <!-- WIDGET 5 -->
-                        <ms-widget layout="row" flex="100">
-
-                            <!-- Front -->
-                            <ms-widget-front class="white-bg">
-
-                                <div class="simple-table-container" ms-responsive-table>
-                                    <div class=" table-title">
-                                        {{vm.widget5.title}}
-                                    </div>
-
-                                    <table class="simple">
-                                        <thead>
-                                            <tr>
-                                                <th ng-repeat="column in vm.widget5.table.columns">
-                                                    {{column.title}}
-                                                </th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr ng-repeat="row in vm.widget5.table.rows">
-                                                <td ng-repeat="cell in row">
-                                                    <span class="{{cell.classes}}">
-                                                        {{cell.value}}
-                                                    </span>
-                                                    <i ng-if="cell.icon" class="icon {{cell.icon}}"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </ms-widget-front>
-                            <!-- / Front -->
-
-                        </ms-widget>
-                        <!-- / WIDGET 5 -->
-
-                    </div>
-                    <!-- / WIDGET GROUP -->
                 </md-tab>
             </md-tabs>
         </div>
