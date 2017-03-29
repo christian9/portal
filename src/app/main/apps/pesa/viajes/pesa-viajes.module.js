@@ -14,8 +14,10 @@
     /** @ngInject */
     function config($stateProvider, msApiProvider)
     {
+            
         // State
         $stateProvider.state('app.pesa_viajes', {
+            //abstract: true,
             url      : '/pesa-viajes',
             views    : {
                 'content@app': {
@@ -42,8 +44,8 @@
 
         // Api
         msApiProvider.register('pesa.json', ['app/data/pesa/viajes/data.json']);
-        msApiProvider.register('pesa.variables', ['http://gestionagricolaapi.azurewebsites.net/api/variable',null,{'get': { method:'get', isArray: true }}]);
-        msApiProvider.register('pesa.bananas', ['http://gestionagricolaapi.azurewebsites.net/api/banano',null,{'get': { method:'get', isArray: true }}]);
+        msApiProvider.register('pesa.variables', ['http://localhost:900/api/variable',null,{'get': { method:'get', isArray: true }}]);
+        msApiProvider.register('pesa.bananas', ['http://localhost:900/api/banano',null,{'get': { method:'get', isArray: true }}]);
     }
 
 })();
