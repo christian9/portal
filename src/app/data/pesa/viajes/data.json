@@ -57,169 +57,70 @@
                 {
                     "title": "Peso"
                 }
-            ],
-            "rows": [
-                [
-                    {
-                        "value": "Wireframing",
-                        "classes": "text-boxed m-0 deep-orange-bg white-fg",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$14,880.00",
-                        "classes": "text-bold",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$14,000.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%94.08",
-                        "classes": "red-fg",
-                        "icon": "icon icon-trending-up s14 red-fg"
-                    },
-                    {
-                        "value": "$880.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%5.92",
-                        "classes": "",
-                        "icon": ""
-                    }
-                ],
-                [
-                    {
-                        "value": "Design",
-                        "classes": "text-boxed m-0 purple-bg white-fg",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$21,080.00",
-                        "classes": "text-bold",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$17,240.34",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%81.78",
-                        "classes": "red-fg",
-                        "icon": "icon icon-trending-up s14 red-fg"
-                    },
-                    {
-                        "value": "$3,839.66",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%18.22",
-                        "classes": "",
-                        "icon": ""
-                    }
-                ],
-                [
-                    {
-                        "value": "Coding",
-                        "classes": "text-boxed m-0 light-blue-bg white-fg",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$34,720.00",
-                        "classes": "text-bold",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$3,518.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%10.13",
-                        "classes": "green-fg",
-                        "icon": "icon icon-trending-down s14 green-fg"
-                    },
-                    {
-                        "value": "$31,202.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%89.87",
-                        "classes": "",
-                        "icon": ""
-                    }
-                ],
-                [
-                    {
-                        "value": "Marketing",
-                        "classes": "text-boxed m-0 pink-bg white-fg",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$34,720.00",
-                        "classes": "text-bold",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$0.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%0.00",
-                        "classes": "green-fg",
-                        "icon": "icon icon-minus s14 green-fg"
-                    },
-                    {
-                        "value": "$34,720.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%100.00",
-                        "classes": "",
-                        "icon": ""
-                    }
-                ],
-                [
-                    {
-                        "value": "Extra",
-                        "classes": "text-boxed m-0 amber-bg white-fg",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$18,600.00",
-                        "classes": "text-bold",
-                        "icon": ""
-                    },
-                    {
-                        "value": "$0.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%0.00",
-                        "classes": "green-fg",
-                        "icon": "icon icon-minus s14 green-fg"
-                    },
-                    {
-                        "value": "$34,720.00",
-                        "classes": "",
-                        "icon": ""
-                    },
-                    {
-                        "value": "%100.00",
-                        "classes": "",
-                        "icon": ""
-                    }
-                ]
             ]
+        }
+    },
+    "widget6": {
+        "ranges": {
+            "DT": "Este día"
+        },
+        "currentRange": "DT",
+        "data": {
+            "label": "Racimos Totales (Uds)",
+            "count": {
+                "DY": 18,
+                "DT": 15
+            },
+            "extra": {
+                "label": "Proyectados",
+                "count": {
+                    "DY": "-",
+                    "DT": "-"
+                }
+            }
+        },
+        "detail": {
+            "title":"Detalle de Racimos:",
+            "date": "30/03/17",
+            "count":"N"
+        }
+    },
+    "widget7": {
+        "ranges": {
+            "DT": "Este día"
+        },
+        "currentRange": "DT",
+        "data": {
+            "label": "Peso Total (Tn)",
+            "count": {
+                "DY": 25,
+                "DT": 22
+            },
+            "extra": {
+                "label": "Proyectados",
+                "count": {
+                    "DY": "-",
+                    "DT": "-"
+                }
+            }
+        },
+        "detail": {
+            "title":"Detalle de Peso:",
+            "date": "30/03/17",
+            "count":"N"
+        }
+    },
+    "widget8": {
+        "title": "Aporte por Cable ",
+        "ranges": {
+            "A": "Todos"
+        }
+    },
+
+    "widget9": {
+        "title": "Aporte por Cuadrilla ",
+        "ranges": {
+            "A": "Todos"
         }
     }
 }

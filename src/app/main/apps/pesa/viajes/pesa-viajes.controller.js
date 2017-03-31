@@ -7,7 +7,7 @@
         .controller('PesaViajesController', PesaViajesController);
 
     /** @ngInject */
-    function PesaViajesController($state, $scope,JsonData, VariableData, BananaData)
+    function PesaViajesController($state, $stateParams, $scope,JsonData, VariableData, BananaData)
     {
         var vm = this;
         vm.views = {
@@ -95,7 +95,7 @@
                             chart.multibar.dispatch.on('elementClick', function(e){
                                 //console.log("Dispatch!");
                                 //console.log('elementClick in callback', e.data);   
-                                console.log(e.data);
+                                //console.log(e.data);
                                 changeView("detalles",e.data);                            
                             });
                         }
@@ -250,7 +250,7 @@
                 vm.widget3.changeRange('A');
             }
         };
-         // Widget 4
+        // Widget 4
         vm.widget4 = {
             title       : vm.jsonData.widget4.title,
             mainChart   : {
@@ -332,26 +332,25 @@
                 vm.widget4.changeRange('A');
             }
         };
-        // Widget 10
+        // Widget 5
         vm.widget5 = vm.jsonData.widget5;
         vm.widget5.table.rows = byDays.Rows;
+        // Widget 6
+        vm.widget6 = vm.jsonData.widget6;
+        // Widget 7
+        vm.widget7 = vm.jsonData.widget7;        
 
-        // Methods
-
-        //////////
-
-        // Initialize Widget 1
-        //vm.widget1.init();
         // Initialize Widget 3
         vm.widget3.init();
         // Initialize Widget 4
-        vm.widget4.init();    
+        vm.widget4.init();     
         
         // FUNCTIONS
         /**
          * Change the view
          *
          * @param view
+         * @param params
          */
         function changeView(view, params) {
             if( params ) {
@@ -364,8 +363,15 @@
                 vm.currentView = view;
                 //console.log(vm.currentView);
             }
+
+            d3.selectAll('.nvtooltip').remove();
+            
             // Update the state without reloading the controller
-            $state.go('app.pesa_viajes', {notify: true});
+            //$state.reload();
+            //$state.transitionTo('app.pesa_viajes');
+            $state.transitionTo($state.current, $stateParams, { 
+                reload: true, inherit: false, notify: false 
+            });
         }
 
         /**
@@ -374,7 +380,204 @@
          * @param params
          */
         function setDetails(params) {
+            var daysDiff = params.x;
+            var date = new Date(new Date().setDate(new Date().getDate() + daysDiff));
+            var yest = new Date(new Date().setDate(new Date().getDate() + (daysDiff-1)));
+            var strDate = date.toLocaleDateString('en-GB');
+            var strYest = yest.toLocaleDateString('en-GB');
+            var thisCableChart = byDays[strDate]["CableChart"];
+            //console.log(thisCableChart);
+            // Widget 8
+            vm.widget8 = {
+                title       : vm.jsonData.widget8.title,
+                mainChart   : {
+                    config : {
+                        refreshDataOnly: true,
+                        deepWatchData  : true
+                    },
+                    options: {
+                        chart: {
+                            type        : 'pieChart',
+                            color       : ['#f44336', '#9c27b0', '#03a9f4', '#e91e63'],
+                            height      : 400,
+                            margin      : {
+                                top   : 0,
+                                right : 0,
+                                bottom: 0,
+                                left  : 0
+                            },
+                            donut       : true,
+                            clipEdge    : true,
+                            cornerRadius: 0,
+                            labelType   : 'percent',
+                            padAngle    : 0.02,
+                            x           : function (d)
+                            {
+                                return d.label;
+                            },
+                            y           : function (d)
+                            {
+                                return d.value;
+                            },
+                            tooltip     : {
+                                gravity: 's',
+                                classes: 'gravity-s'
+                            }
+                        }
+                    },
+                    data   : []
+                },
+                footerLeft  : thisCableChart.footerLeft,
+                footerRight : thisCableChart.footerRight,
+                ranges      : thisCableChart.ranges,
+                currentRange: '',
+                changeRange : function (range)
+                {
+                    vm.widget8.currentRange = range;
+
+                    /**
+                     * Update main chart data by iterating through the
+                     * chart dataset and separately adding every single
+                     * dataset by hand.
+                     *
+                     * You MUST NOT swap the entire data object by doing
+                     * something similar to this:
+                     * vm.widget.mainChart.data = chartData
+                     *
+                     * It would be easier but it won't work with the
+                     * live updating / animated charts due to how d3
+                     * works.
+                     *
+                     * If you don't need animated / live updating charts,
+                     * you can simplify these greatly.
+                     */
+                    angular.forEach(thisCableChart.mainChart, function (data, index)
+                    {
+                        vm.widget8.mainChart.data[index] = {
+                            label: data.label,
+                            value: data.values[range]
+                        };
+                    });
+                },
+                init        : function ()
+                {
+                    // Run this function once to initialize widget
+
+                    /**
+                     * Update the range for the first time
+                     */
+                    vm.widget8.changeRange('A');
+                }
+            };  
+            var thisCuadChart = byDays[strDate]["CuadChart"]; 
+            //console.log(thisCuadChart);      
+            // Widget 9
+            vm.widget9 = {
+                title       : vm.jsonData.widget9.title,
+                mainChart   : {
+                    config : {
+                        refreshDataOnly: true,
+                        deepWatchData  : true
+                    },
+                    options: {
+                        chart: {
+                            type        : 'pieChart',
+                            color       : ['#f44336', '#9c27b0', '#03a9f4', '#e91e63'],
+                            height      : 400,
+                            margin      : {
+                                top   : 0,
+                                right : 0,
+                                bottom: 0,
+                                left  : 0
+                            },
+                            donut       : true,
+                            clipEdge    : true,
+                            cornerRadius: 0,
+                            labelType   : 'percent',
+                            padAngle    : 0.02,
+                            x           : function (d)
+                            {
+                                return d.label;
+                            },
+                            y           : function (d)
+                            {
+                                return d.value;
+                            },
+                            tooltip     : {
+                                gravity: 's',
+                                classes: 'gravity-s'
+                            }
+                        }
+                    },
+                    data   : []
+                },
+                footerLeft  : thisCuadChart.footerLeft,
+                footerRight : thisCuadChart.footerRight,
+                ranges      : thisCuadChart.ranges,
+                currentRange: '',
+                changeRange : function (range)
+                {
+                    vm.widget9.currentRange = range;
+
+                    /**
+                     * Update main chart data by iterating through the
+                     * chart dataset and separately adding every single
+                     * dataset by hand.
+                     *
+                     * You MUST NOT swap the entire data object by doing
+                     * something similar to this:
+                     * vm.widget.mainChart.data = chartData
+                     *
+                     * It would be easier but it won't work with the
+                     * live updating / animated charts due to how d3
+                     * works.
+                     *
+                     * If you don't need animated / live updating charts,
+                     * you can simplify these greatly.
+                     */
+                    angular.forEach(thisCuadChart.mainChart, function (data, index)
+                    {
+                        vm.widget9.mainChart.data[index] = {
+                            label: data.label,
+                            value: data.values[range]
+                        };
+                    });
+                },
+                init        : function ()
+                {
+                    // Run this function once to initialize widget
+                    /**
+                     * Update the range for the first time
+                     */
+                    vm.widget9.changeRange('A');
+                }
+            };
+            // Initialize Widget 8
+            vm.widget8.init();
+            // Initialize Widget 9
+            vm.widget9.init(); 
             
+            console.log(byDays);
+            vm.widget6.detail.date = strDate + " & " + strYest;
+            vm.widget7.detail.date = strDate + " & " + strYest;
+            vm.widget6.data.count.DT = byDays[strDate].Cantidad;
+            vm.widget7.data.count.DT = byDays[strDate].Peso;
+            vm.widget6.detail.count  = byDays[strDate].Cantidad;
+            vm.widget7.detail.count  = byDays[strDate].Peso;
+            console.log(strDate);
+            if(byDays[strYest]){
+                console.log(strYest);
+                vm.widget6.ranges["DY"] = "Anterior";
+                vm.widget7.ranges["DY"] = "Anterior";
+                vm.widget6.data.count.DY = byDays[strYest].Cantidad;
+                vm.widget7.data.count.DY = byDays[strYest].Peso;
+                vm.widget6.detail.count += byDays[strYest].Cantidad;
+                vm.widget7.detail.count += byDays[strYest].Peso;
+            }
+            else{
+                delete vm.widget6.ranges["DY"];
+                delete vm.widget7.ranges["DY"];
+            }
         }
 
         /**
@@ -420,8 +623,8 @@
          * @param banData
          */
         function parseData(banData) {
+            // FOR - Work on every banana
             var travels = [];
-            //console.log(banData);
             for (var banana in banData) {
                 banana = banData[banana];
                 //console.log(banana); 
@@ -465,11 +668,10 @@
                         travels.push(travel);
                     };
                 }
-                // else{
-                //     console.log(banana);
-                // }
             };
+            ////// END FOR - Work on every banana
 
+            // SORT
             travels.sort(function (x, y) {
                 var a = x["Fecha"];
                 var b = y["Fecha"];
@@ -477,6 +679,9 @@
                 b = b.getTime();
                 return a < b ? -1 : a > b ? 1 : 0;
             });
+            ////// END SORT
+
+            // FOR - Work on every travel
             var total = 0;
             var porFecha = {};
             var travelRows = [];
@@ -544,29 +749,47 @@
                     }
                 }
             }
+            ////// END FOR - Work on every travel
+
+            // FOR - Work on every date
             porFecha["CableCharts"] = [];
             porFecha["CuadCharts"] = [];
             var bigChart = [{"key":"Racimos","values":[]}];
-            for(var strDate in porFecha){ 
+            for(var strDate in porFecha){
                 if(strDate != "CableCharts" && strDate != "CuadCharts")  {
                     var pf = porFecha[strDate];
                     //Calculate difference in dates to give the chart "x" value. 0=today, -1=yesterday, 1=tomorrow, ...
                     var today = new Date();
-                    var parts = strDate.split("/")
+                    var parts = strDate.split("/");
                     var date = new Date( parseInt(parts[2]), parseInt(parts[1])-1, parseInt(parts[0]) );
                     var timeDiff = date.getTime() - today.getTime();
                     var daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    var cuadDayChart = { 
+                        "ranges":{"A":"Todos"}, 
+                        "mainChart":[]
+                    }
+                    var cableDayChart = {
+                        "ranges":{"A":"Todos"}, 
+                        "mainChart":[]
+                    }
+                    var total = pf.Cantidad;
+                    var maximoCable = 0;
+                    var maximoCuad = 0;
                     //Add to certain graph depending on rejection variable(s)
                     for(var cable in pf){
-                        if(cable != "Cantidad" && cable != "Peso"){
+                        if(cable != "Cantidad" && cable != "Peso" && cable != "CableChart" && cable != "CuadChart"){
                             if(cable.indexOf("Grupo") > -1){
                                 //console.log(key+" - "+date+" - "+daysDiff);
                                 var cableData = pf[cable];
+                                if(cableData.Cantidad > maximoCable){
+                                    maximoCable = cableData.Cantidad;
+                                }
+                                cableDayChart["mainChart"].push( {"label":cable, "values":{"A":cableData.Cantidad}} );
                                 var ind = hasGraph(cable,porFecha["CableCharts"])
                                 if(ind != -1){
                                     var gr = porFecha["CableCharts"][ind];
                                     gr["Cantidad"] += cableData.Cantidad;
-                                    gr["Value"] += cableData.Peso;                        
+                                    gr["Value"] += cableData.Peso;
                                     gr["Data"][0]["values"].push({"x":daysDiff, "y":cableData.Cantidad});
                                     porFecha["CableCharts"][ind] = gr;
                                 }
@@ -583,11 +806,15 @@
                             else{
                                 //console.log(key+" - "+date+" - "+daysDiff);
                                 var cuadData = pf[cable];
+                                if(cuadData.Cantidad > maximoCuad){
+                                    maximoCuad = cuadData.Cantidad;
+                                }
+                                cuadDayChart["mainChart"].push( {"label":cable, "values":{"A":cuadData.Cantidad}} );
                                 var ind = hasGraph(cable,porFecha["CuadCharts"])
                                 if(ind != -1){
                                     var gr = porFecha["CuadCharts"][ind];
                                     gr["Cantidad"] += cuadData.Cantidad;
-                                    gr["Value"] += cuadData.Peso;                        
+                                    gr["Value"] += cuadData.Peso;
                                     gr["Data"][0]["values"].push({"x":daysDiff, "y":cuadData.Cantidad});
                                     porFecha["CuadCharts"][ind] = gr;
                                 }
@@ -595,18 +822,28 @@
                                     var gr = {}
                                     gr["Title"] = cable;
                                     gr["Cantidad"] = cuadData.Cantidad;
-                                    gr["Value"] = cuadData.Peso; 
-                                    gr["Data"] = [{"key":"Racimos", "values":[]}];                    
+                                    gr["Value"] = cuadData.Peso;
+                                    gr["Data"] = [{"key":"Racimos", "values":[]}];
                                     gr["Data"][0]["values"].push({"x":daysDiff, "y":cuadData.Cantidad});
                                     porFecha["CuadCharts"].push(gr);
                                 }
                             }
                         }
                     }
+                    cableDayChart["footerLeft"] = {"title":"Total","count":{"A":total}};
+                    cableDayChart["footerRight"] = {"title":"Máximo","count":{"A":maximoCable}};  
+                    cuadDayChart["footerLeft"] = {"title":"Total","count":{"A":total}};
+                    cuadDayChart["footerRight"] = {"title":"Máximo","count":{"A":maximoCuad}};  
+                    pf["CableChart"] = cableDayChart;
+                    pf["CuadChart"] = cuadDayChart;
+                    porFecha[strDate] = pf;
                     bigChart[0]["values"].push({"x":daysDiff, "y":pf["Cantidad"]});
                 }
             }
-            var porCable = { 
+            ///// END FOR - Work on every date
+
+            // FOR - Work on every cable chart
+            var porCable = {
                 "ranges":{"A":"Todos"}, 
                 "mainChart":[]
             }
@@ -620,8 +857,10 @@
                 }
             }
             porCable["footerLeft"] = {"title":"Total","count":{"A":total}};
-            porCable["footerRight"] = {"title":"Máximo","count":{"A":maximo1}};
+            porCable["footerRight"] = {"title":"Máximo","count":{"A":maximo1}};            
+            ////// ENDFOR - Work on every cable chart
 
+            // FOR - Work on every cuadrilla chart
             var porCuad = { 
                 "ranges":{"A":"Todos"}, 
                 "mainChart":[]
@@ -637,6 +876,8 @@
             }
             porCuad["footerLeft"] = {"title":"Total","count":{"A":total}};
             porCuad["footerRight"] = {"title":"Máximo","count":{"A":maximo2}};
+            ////// END FOR - Work on every cuadrilla chart
+
             porFecha["Viajes"] = travels;
             porFecha["BigChart"] = bigChart;
             porFecha["PorCable"] = porCable;
@@ -644,7 +885,7 @@
             porFecha["Rows"] = travelRows;
             return porFecha;
         }
-        // END FUNCTIONS
+        ////// END FUNCTIONS
     }
 
 })();

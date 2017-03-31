@@ -43,8 +43,8 @@
 
         // Api
         msApiProvider.register('pesa.mjson', ['app/data/pesa/muestreos/data.json']);
-        msApiProvider.register('pesa.variables', ['http://localhost:900/api/variable',null,{'get': { method:'get', isArray: true }}]);
-        msApiProvider.register('pesa.bananas', ['http://localhost:900/api/banano',null,{'get': { method:'get', isArray: true }}]);
+        msApiProvider.register('pesa.variables', ['http://localhost:901/api/variable',null,{'get': { method:'get', isArray: true }}]);
+        msApiProvider.register('pesa.bananas', ['http://localhost:901/api/banano',null,{'get': { method:'get', isArray: true }}]);
     }
 
 })();

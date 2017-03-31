@@ -7,32 +7,17 @@
                 <div>
                     <span class="md-display-1 font-weight-300">Consulta de Viajes</span>
                 </div>
-
+            </div>
+            <div layout="row" layout-align="space-between">
                 <div class="toolbar">
-                    <md-button class="md-icon-button sidenav-toggle" ng-click="vm.toggleSidenav('sidenav')" hide-gt-md aria-label="Toggle sidenav">
-                        <md-icon md-font-icon="icon-menu" class="icon"></md-icon>
+                    <md-button class="md-icon-button sidenav-toggle" ng-click="vm.changeView('main')"  aria-label="Ir Atrás">
+                        <md-icon class="icon">
+                            <!--<i class="material-icons">&#xE5C4;</i>-->
+                            <i class="material-icons">arrow_back</i>
+                        </md-icon>
                     </md-button>
                 </div>
             </div>
-
-            <!--<div layout="row">
-                <div class="selected-project">{{vm.selectedProject.name}}</div>
-
-                <md-menu id="projects-menu" md-offset="0 48">
-                    <md-button class="md-icon-button project-selector" ng-click="$mdOpenMenu()"
-                               aria-label="Select project" md-menu-origin md-menu-align-target>
-                        <md-icon md-font-icon="icon-dots-horizontal"></md-icon>
-                    </md-button>
-
-                    <md-menu-content width="3" class="md-background-bg">
-                        <md-menu-item ng-repeat="project in vm.projects">
-                            <md-button ng-click="vm.selectProject(project)" aria-label="{{project.name}}">
-                                <span ng-class="{'secondary-text': vm.selectedProject == project}">{{project.name}}</span>
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-            </div>-->
         </div>
         <!-- / HEADER -->
         <!-- CONTENT -->

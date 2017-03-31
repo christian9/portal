@@ -1,8 +1,235 @@
 <!-- INNER CONTENT -->
 <md-tabs md-dynamic-height>
-    <md-tab label="Tablas">
+    <md-tab label="Resumen">
         <!-- WIDGET GROUP -->
         <div class="widget-group" layout="row" flex="100" layout-wrap>
+
+            <!-- WIDGET 6 -->
+            <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="50">
+
+                <!-- Front -->
+                <ms-widget-front class="white-bg">
+                    <div class="ph-8 pv-16 h-55" layout="row" layout-align="space-between center">
+                        <md-select class="simplified font-size-16" ng-model="vm.widget6.currentRange"
+                                    aria-label="Change range">
+                            <md-option ng-repeat="(key, range) in vm.widget6.ranges"
+                                        value="{{key}}">
+                                {{range}}
+                            </md-option>
+                        </md-select>
+
+                        <md-menu>
+                            <md-button class="md-icon-button" ng-click="$mdOpenMenu()"
+                                        aria-label="more">
+                                <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                            </md-button>
+
+                            <md-menu-content width="3">
+                                <md-menu-item>
+                                    <md-button ng-click="flipWidget()" aria-label="Flip widget">
+                                        Detalles
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="refreshWidget()" aria-label="Refresh widget">
+                                        Actualizar
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
+
+                    <div class="pt-8 pb-32" layout="column" layout-align="center center">
+                        <div class="light-blue-fg font-size-72 line-height-72">
+                            {{vm.widget6.data.count[vm.widget6.currentRange]}}
+                        </div>
+                        <div class="h3 secondary-text font-weight-500">{{vm.widget6.data.label}}</div>
+                    </div>
+
+                    <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                        <span class="h4 secondary-text text-truncate">{{vm.widget6.data.extra.label}}:</span>
+                        <span class="h4 ml-8">{{vm.widget6.data.extra.count[vm.widget6.currentRange]}}</span>
+                    </div>
+                </ms-widget-front>
+                <!-- / Front -->
+
+                <!-- Back -->
+                <ms-widget-back class="p-16 white-bg">
+                    <div class="flip-to-front">
+                        <md-button class="md-icon-button" ng-click="flipWidget()"
+                                    aria-label="Flip widget">
+                            <md-icon md-font-icon="icon-close" class="s16"></md-icon>
+                        </md-button>
+                    </div>
+
+                    <div class="h3 secondary-text font-weight-500">
+                        {{vm.widget6.detail.title}}
+                    </div >
+
+                    <div class="h5 secondary-text font-weight-500">
+                        {{"Fecha: "+vm.widget6.detail.date}}
+                    </div>
+
+                    <div class="h5 secondary-text font-weight-500">
+                        {{"Total: "+vm.widget6.detail.count}}
+                    </div>
+                </ms-widget-back>
+                <!-- / Back -->
+
+            </ms-widget>
+            <!-- / WIDGET 6 -->
+            <!-- WIDGET 7 -->
+            <ms-widget flippable="true" layout="column" flex="100" flex-gt-xs="50" flex-gt-md="50">
+
+                <!-- Front -->
+                <ms-widget-front class="white-bg">
+                    <div class="ph-8 pv-16 h-55" layout="row" layout-align="space-between center">
+                        <md-select class="simplified font-size-16" ng-model="vm.widget7.currentRange"
+                                    aria-label="Change range">
+                            <md-option ng-repeat="(key, range) in vm.widget7.ranges"
+                                        value="{{key}}">
+                                {{range}}
+                            </md-option>
+                        </md-select>
+
+                        <md-menu>
+                            <md-button class="md-icon-button" ng-click="$mdOpenMenu()"
+                                        aria-label="more">
+                                <md-icon md-font-icon="icon-dots-vertical"></md-icon>
+                            </md-button>
+
+                            <md-menu-content width="3">
+                                <md-menu-item>
+                                    <md-button ng-click="flipWidget()" aria-label="Flip widget">
+                                        Detalles
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="refreshWidget()" aria-label="Refresh widget">
+                                        Actualizar
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
+
+                    <div class="pt-8 pb-32" layout="column" layout-align="center center">
+                        <div class="light-green-fg font-size-72 line-height-72">
+                            {{vm.widget7.data.count[vm.widget7.currentRange]}}
+                        </div>
+                        <div class="h3 secondary-text font-weight-500">{{vm.widget7.data.label}}</div>
+                    </div>
+
+                    <div class="p-16 grey-50-bg border-top" layout="row" layout-align="start center">
+                        <span class="h4 secondary-text text-truncate">{{vm.widget7.data.extra.label}}:</span>
+                        <span class="h4 ml-8">{{vm.widget7.data.extra.count[vm.widget7.currentRange]}}</span>
+                    </div>
+                </ms-widget-front>
+                <!-- / Front -->
+
+                <!-- Back -->
+                <ms-widget-back class="p-16 white-bg">
+                    <div class="flip-to-front">
+                        <md-button class="md-icon-button" ng-click="flipWidget()"
+                                    aria-label="Flip widget">
+                            <md-icon md-font-icon="icon-close" class="s16"></md-icon>
+                        </md-button>
+                    </div>
+
+                    <div class="h3 secondary-text font-weight-500">
+                        {{vm.widget7.detail.title}}
+                    </div >
+
+                    <div class="h5 secondary-text font-weight-500">
+                        {{"Fecha: "+vm.widget7.detail.date}}
+                    </div>
+
+                    <div class="h5 secondary-text font-weight-500">
+                        {{"Total: "+vm.widget7.detail.count}}
+                    </div>
+                </ms-widget-back>
+                <!-- / Back -->
+
+            </ms-widget>
+            <!-- / WIDGET 7 -->
+        </div>
+        <!-- / WIDGET GROUP -->
+        <!-- WIDGET GROUP -->
+        <div class="widget-group" layout="row" flex="100" layout-wrap>
+            <!-- WIDGET 8 -->
+            <ms-widget layout="column" flex="100" flex-gt-sm="50">
+                <!-- Front -->
+                <ms-widget-front class="white-bg">
+
+                    <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                        <div class="h3">{{vm.widget8.title}}</div>
+                        <div class="pv-16">
+                            <md-select class="simplified" ng-model="vm.widget8.currentRange" ng-change="vm.widget8.changeRange(vm.widget8.currentRange)"
+                                aria-label="Change range">
+                                <md-option ng-repeat="(key, range) in vm.widget8.ranges" value="{{key}}">
+                                    {{range}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+
+                    <div class="p-16">
+                        <nvd3 class="h-400" config="vm.widget8.mainChart.config" options="vm.widget8.mainChart.options" data="vm.widget8.mainChart.data"></nvd3>
+                    </div>
+
+                    <div class="pv-8 mh-16 border-top" layout="row" layout-align="start center" layout-wrap>
+                        <div class="pv-8 border-right" layout="column" layout-align="center center" flex="100" flex-gt-xs="50">
+                            <span class="font-size-32">{{vm.widget8.footerLeft.count[vm.widget8.currentRange]}}</span>
+                            <span class="h4">{{vm.widget8.footerLeft.title}}</span>
+                        </div>
+
+                        <div class="pv-8" layout="column" layout-align="center center" flex="100" flex-gt-xs="50">
+                            <span class="font-size-32">{{vm.widget8.footerRight.count[vm.widget8.currentRange]}}</span>
+                            <span class="h4">{{vm.widget8.footerRight.title}}</span>
+                        </div>
+                    </div>
+
+                </ms-widget-front>
+                <!-- / Front -->
+            </ms-widget>
+            <!-- / WIDGET 8 -->
+            <!-- WIDGET 9 -->
+            <ms-widget layout="column" flex="100" flex-gt-sm="50">
+                <!-- Front -->
+                <ms-widget-front class="white-bg">
+
+                    <div class="ph-16 border-bottom" layout="row" layout-align="space-between center">
+                        <div class="h3">{{vm.widget9.title}}</div>
+                        <div class="pv-16">
+                            <md-select class="simplified" ng-model="vm.widget9.currentRange" ng-change="vm.widget9.changeRange(vm.widget9.currentRange)"
+                                aria-label="Change range">
+                                <md-option ng-repeat="(key, range) in vm.widget9.ranges" value="{{key}}">
+                                    {{range}}
+                                </md-option>
+                            </md-select>
+                        </div>
+                    </div>
+
+                    <div class="p-16">
+                        <nvd3 class="h-400" config="vm.widget9.mainChart.config" options="vm.widget9.mainChart.options" data="vm.widget9.mainChart.data"></nvd3>
+                    </div>
+
+                    <div class="pv-8 mh-16 border-top" layout="row" layout-align="start center" layout-wrap>
+                        <div class="pv-8 border-right" layout="column" layout-align="center center" flex="100" flex-gt-xs="50">
+                            <span class="font-size-32">{{vm.widget9.footerLeft.count[vm.widget9.currentRange]}}</span>
+                            <span class="h4">{{vm.widget9.footerLeft.title}}</span>
+                        </div>
+
+                        <div class="pv-8" layout="column" layout-align="center center" flex="100" flex-gt-xs="50">
+                            <span class="font-size-32">{{vm.widget9.footerRight.count[vm.widget9.currentRange]}}</span>
+                            <span class="h4">{{vm.widget9.footerRight.title}}</span>
+                        </div>
+                    </div>
+
+                </ms-widget-front>
+                <!-- / Front -->
+            </ms-widget>
+            <!-- / WIDGET 9 -->
         </div>
         <!-- / WIDGET GROUP -->
     </md-tab>
