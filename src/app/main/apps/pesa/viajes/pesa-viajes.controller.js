@@ -168,7 +168,7 @@
             //console.log(vm.widget2.charts[ind]);
             n+=1;
         }
-         // Widget 3
+        // Widget 3
         vm.widget3 = {
             title       : vm.jsonData.widget3.title,
             mainChart   : {
@@ -468,8 +468,8 @@
                      */
                     vm.widget8.changeRange('A');
                 }
-            };  
-            var thisCuadChart = byDays[strDate]["CuadChart"]; 
+            };
+            var thisCuadChart = byDays[strDate]["CuadChart"];
             //console.log(thisCuadChart);      
             // Widget 9
             vm.widget9 = {
@@ -557,16 +557,16 @@
             // Initialize Widget 9
             vm.widget9.init(); 
             
-            console.log(byDays);
+            //console.log(byDays);
             vm.widget6.detail.date = strDate + " & " + strYest;
             vm.widget7.detail.date = strDate + " & " + strYest;
             vm.widget6.data.count.DT = byDays[strDate].Cantidad;
             vm.widget7.data.count.DT = byDays[strDate].Peso;
             vm.widget6.detail.count  = byDays[strDate].Cantidad;
             vm.widget7.detail.count  = byDays[strDate].Peso;
-            console.log(strDate);
+            //console.log(strDate);
             if(byDays[strYest]){
-                console.log(strYest);
+                //console.log(strYest);
                 vm.widget6.ranges["DY"] = "Anterior";
                 vm.widget7.ranges["DY"] = "Anterior";
                 vm.widget6.data.count.DY = byDays[strYest].Cantidad;
@@ -630,6 +630,15 @@
                 //console.log(banana); 
                 var newTravel = true;
                 var fecha =  new Date(banana["Time"]);
+                //Convierte a Kg
+                if(banana["Unit"]){
+                    if(banana["Unit"] == "g"){
+                        banana["Weight"] = banana["Weight"]/1000;
+                    }
+                    else if(banana["Unit"] == "lb"){
+                        banana["Weight"] == 0.453592 * banana["Weight"];
+                    }
+                }
                 if(isValidDate(fecha)){
                     for (var travel in travels) {
                         travel = travels[travel];
@@ -753,7 +762,7 @@
 
             // FOR - Work on every date
             porFecha["CableCharts"] = [];
-            porFecha["CuadCharts"] = [];
+            porFecha["CuadCharts"] =  [];
             var bigChart = [{"key":"Racimos","values":[]}];
             for(var strDate in porFecha){
                 if(strDate != "CableCharts" && strDate != "CuadCharts")  {

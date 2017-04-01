@@ -14,7 +14,6 @@
     /** @ngInject */
     function config($stateProvider, msApiProvider)
     {
-            
         // State
         $stateProvider.state('app.pesa_viajes', {
             //abstract: true,
